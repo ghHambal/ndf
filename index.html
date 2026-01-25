@@ -1,0 +1,1534 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>ผู้ช่วยวางแผนฟาร์มผัก</title>
+  <meta name="theme-color" content="#0ea75a"/>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a30;
+      --muted:#9fb0d0;
+      --text:#eaf0ff;
+      --line:rgba(255,255,255,.08);
+
+      --g1:#0ea75a; /* วันนี้ */
+      --g2:#2563eb; /* รอบปลูก */
+      --g3:#f59e0b; /* บันทึก */
+      --g4:#a855f7; /* ตั้งค่า */
+
+      --danger:#ef4444;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", Arial;
+      background: radial-gradient(1200px 600px at 40% -20%, rgba(14,167,90,.25), transparent 60%),
+                  radial-gradient(1200px 600px at 110% 10%, rgba(37,99,235,.25), transparent 55%),
+                  radial-gradient(900px 600px at -10% 100%, rgba(168,85,247,.22), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      padding-bottom:92px;
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:16px 14px;}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 12px 8px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+    }
+    .logo{
+      width:40px;height:40px;border-radius:14px;
+      background: linear-gradient(145deg, rgba(14,167,90,.95), rgba(37,99,235,.9));
+      display:grid;place-items:center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      font-size:20px;
+    }
+    h1{font-size:20px;margin:0}
+    .sub{color:var(--muted);font-size:12px;margin-top:2px}
+    .chip{
+      border:1px solid var(--line);
+      padding:8px 10px;border-radius:999px;
+      display:flex;gap:8px;align-items:center;
+      background: rgba(255,255,255,.03);
+      font-size:12px;color:var(--muted);
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);
+      padding:7px 10px;border-radius:999px;
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      font-size:12px;
+    }
+    .pill b{font-weight:700}
+    .grid{display:grid;gap:12px;}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      box-shadow: 0 16px 38px rgba(0,0,0,.22);
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:16px;
+      display:flex;gap:8px;align-items:center;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row > *{flex:1}
+    label{font-size:12px;color:var(--muted);display:block;margin:8px 0 6px}
+    input,select,textarea{
+      width:100%;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      border-radius:12px;
+      padding:12px 12px;
+      font-size:14px;
+      outline:none;
+    }
+    textarea{min-height:72px;resize:vertical}
+    input::placeholder, textarea::placeholder{color:rgba(234,240,255,.35)}
+    .btn{
+      border:none;border-radius:14px;
+      padding:12px 14px;
+      font-weight:700;
+      color:white;
+      width:100%;
+      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      transition:.15s transform;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.g1{background:linear-gradient(180deg, rgba(14,167,90,1), rgba(12,138,76,1))}
+    .btn.g2{background:linear-gradient(180deg, rgba(37,99,235,1), rgba(29,78,216,1))}
+    .btn.g3{background:linear-gradient(180deg, rgba(245,158,11,1), rgba(217,119,6,1))}
+    .btn.g4{background:linear-gradient(180deg, rgba(168,85,247,1), rgba(126,34,206,1))}
+    .btn.outline{
+      background:transparent;
+      border:1px solid rgba(255,255,255,.16);
+      color:var(--text);
+      font-weight:650;
+    }
+    .kpi{
+      display:grid;gap:10px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .mini{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    .mini .t{color:var(--muted);font-size:12px}
+    .mini .v{font-size:16px;font-weight:800;margin-top:4px}
+    .mini .s{font-size:12px;color:var(--muted);margin-top:4px}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      border-radius:999px;padding:6px 10px;
+      font-size:12px;font-weight:700;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.2);
+    }
+    .b-ok{border-color: rgba(34,197,94,.5); color:#bff7d1}
+    .b-warn{border-color: rgba(245,158,11,.55); color:#ffe2a8}
+    .b-danger{border-color: rgba(239,68,68,.55); color:#ffb4b4}
+    .b-info{border-color: rgba(37,99,235,.55); color:#cfe3ff}
+    .list{margin:0;padding:0;list-style:none}
+    .item{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:10px 12px;
+      margin-top:10px;
+    }
+    .item .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .item .title{font-weight:800}
+    .item .meta{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.35}
+    .item .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .smallbtn{
+      padding:8px 10px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color:var(--text);
+      font-weight:650;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .smallbtn.ok{border-color: rgba(34,197,94,.5)}
+    .smallbtn.danger{border-color: rgba(239,68,68,.55)}
+    .smallbtn.warn{border-color: rgba(245,158,11,.55)}
+
+    /* bottom nav */
+    .nav{
+      position:fixed;left:0;right:0;bottom:0;
+      padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(10,16,30,.84);
+      backdrop-filter: blur(12px);
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    .tabs{display:grid;grid-template-columns: repeat(4,1fr);gap:10px;max-width:920px;margin:0 auto;}
+    .tab{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:10px 8px;
+      text-align:center;
+      font-weight:800;
+      font-size:12px;
+      color:rgba(234,240,255,.75);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      user-select:none;
+    }
+    .tab .dot{
+      width:8px;height:8px;border-radius:99px;margin:0 auto 6px;
+      opacity:.8;
+    }
+    .tab.active{color:white}
+    .tab.active.g1{background: rgba(14,167,90,.18); border-color: rgba(14,167,90,.45)}
+    .tab.active.g2{background: rgba(37,99,235,.18); border-color: rgba(37,99,235,.45)}
+    .tab.active.g3{background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.45)}
+    .tab.active.g4{background: rgba(168,85,247,.18); border-color: rgba(168,85,247,.45)}
+
+    .dot.g1{background:var(--g1)}
+    .dot.g2{background:var(--g2)}
+    .dot.g3{background:var(--g3)}
+    .dot.g4{background:var(--g4)}
+
+    .muted{color:var(--muted)}
+    .hr{height:1px;background:var(--line);margin:12px 0}
+    .two{display:grid;grid-template-columns: 1fr 1fr;gap:10px}
+    .hide{display:none !important}
+    .note{font-size:12px;color:var(--muted);line-height:1.45}
+    .warnbox{
+      border:1px dashed rgba(245,158,11,.55);
+      background: rgba(245,158,11,.08);
+      border-radius:14px;
+      padding:10px 12px;
+      color:#ffe9bf;
+      font-size:12px;
+      line-height:1.45;
+    }
+    .okbox{
+      border:1px dashed rgba(34,197,94,.55);
+      background: rgba(34,197,94,.08);
+      border-radius:14px;
+      padding:10px 12px;
+      color:#c9f7d8;
+      font-size:12px;
+      line-height:1.45;
+    }
+    @media (min-width:760px){
+      .grid{grid-template-columns: 1.1fr .9fr;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">🌱</div>
+        <div>
+          <h1>ผู้ช่วยวางแผนฟาร์มผัก</h1>
+          <div class="sub" id="nowLine">กำลังโหลดเวลา…</div>
+        </div>
+      </div>
+      <div class="chip" id="cycleChip">รอบปลูก: <b id="activeCycleName">—</b></div>
+    </div>
+
+    <!-- PAGE: TODAY -->
+    <section id="page-today">
+      <div class="grid">
+        <div class="card">
+          <h2>✅ งานถัดไป (พร้อมนับถอยหลัง)</h2>
+
+          <div class="kpi">
+            <div class="mini">
+              <div class="t">ใกล้สุด</div>
+              <div class="v" id="nextTaskTitle">—</div>
+              <div class="s" id="nextTaskMeta">ยังไม่มีงาน</div>
+            </div>
+            <div class="mini">
+              <div class="t">เหลือเวลา</div>
+              <div class="v" id="countdown">—</div>
+              <div class="s" id="countdownHint">—</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+          <div class="row">
+            <button class="btn g1" id="btnMarkDone">✓ ทำงานนี้เสร็จแล้ว</button>
+          </div>
+          <div class="note" style="margin-top:10px">
+            * ถ้าเปิดแอปค้างไว้ ระบบจะ “เตือนในแอป” (สั่น/เสียง) ตอนถึงเวลาได้  
+            และถ้าคุณโฮสต์เป็น HTTPS + Add to Home Screen จะเปิด Notification จริงได้ (ดูหน้า “ตั้งค่า”)
+          </div>
+
+          <div class="hr"></div>
+          <h2>📋 รายการ “วันนี้ควรทำอะไร”</h2>
+          <div id="todayList" class="note">กำลังคำนวณรายการวันนี้…</div>
+        </div>
+
+        <div class="card">
+          <h2>⚡ สรุปเร็ว</h2>
+          <div class="mini">
+            <div class="t">สถานะระบบ</div>
+            <div class="v" id="systemStatus">พร้อมใช้งาน</div>
+            <div class="s muted" id="systemSub">เก็บข้อมูลใน Local Storage (ไม่หายเวลารีเฟรช)</div>
+          </div>
+
+          <div class="hr"></div>
+          <div class="warnbox">
+            <b>เรื่อง Notification บน iPhone</b><br/>
+            ถ้าเปิดไฟล์ index.html จากเครื่อง (file://) จะไม่เด้งเตือนแบบระบบได้  
+            ต้องเป็นเว็บ HTTPS และติดตั้งเป็น PWA (Add to Home Screen) ถึงจะขอสิทธิ์แจ้งเตือน
+          </div>
+
+          <div class="hr"></div>
+          <button class="btn outline" id="btnExport">⬇️ ส่งออกข้อมูล (JSON)</button>
+          <button class="btn outline" id="btnImport" style="margin-top:10px">⬆️ นำเข้าข้อมูล (JSON)</button>
+          <input id="fileImport" type="file" accept="application/json" class="hide" />
+          <div class="note" style="margin-top:10px">ใช้ย้ายข้อมูลไปเครื่องอื่นได้ครับ</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: CYCLES -->
+    <section id="page-cycles" class="hide">
+      <div class="card">
+        <h2>🧩 รอบปลูกที่กำลังใช้งาน</h2>
+        <div class="two">
+          <div>
+            <label>เลือกรอบปลูก</label>
+            <select id="cycleSelect"></select>
+            <div class="note" id="cycleInfo"></div>
+          </div>
+          <div>
+            <label>หมายเหตุ (ของรอบนี้)</label>
+            <input id="cycleNote" placeholder="เช่น เมล็ดแถม งอก 75% / ปลูกหลังบ้าน ครึ่งวันเช้า" />
+            <button class="btn g2" style="margin-top:10px" id="btnSaveCycleNote">บันทึกหมายเหตุ</button>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+        <h2>➕ สร้างรอบปลูกใหม่</h2>
+        <div class="two">
+          <div>
+            <label>ชื่อรอบปลูก</label>
+            <input id="newCycleName" placeholder="เช่น รอบชุดติดแถม / รอบสัปดาห์ที่ 1" />
+          </div>
+          <div>
+            <label>วันที่เริ่ม (ไทย)</label>
+            <input id="newCycleStart" type="date" />
+          </div>
+        </div>
+        <div class="two">
+          <div>
+            <label>% อัตรางอกเฉลี่ย (ใช้คำนวณเพาะเผื่อ)</label>
+            <input id="newCycleGerm" type="number" min="1" max="100" placeholder="เช่น 75" />
+            <div class="note">ถ้าไม่กรอก จะใช้ 75%</div>
+          </div>
+          <div>
+            <label>จำนวนหลุมเป้าหมาย (เช่น 48 หลุม)</label>
+            <input id="newCycleTargetHoles" type="number" min="1" placeholder="เช่น 48" />
+            <div class="note">ใช้เป็นตัวช่วยคำนวณ “ต้องเพาะกี่หลุม”</div>
+          </div>
+        </div>
+        <button class="btn g2" id="btnCreateCycle">＋ สร้างรอบปลูก</button>
+      </div>
+
+      <div class="card">
+        <h2>🥬 ผักในรอบปลูกนี้ + คำนวณ “เพาะเผื่อ”</h2>
+
+        <div class="two">
+          <div>
+            <label>เลือกผัก</label>
+            <select id="plantSelect"></select>
+            <div class="note">มี “สลัดมิกซ์” และสามารถเพิ่มเองได้ที่หน้า “ตั้งค่า”</div>
+          </div>
+          <div>
+            <label>ต้องการปลูกกี่หลุม (เป้าหมาย)</label>
+            <input id="desiredHoles" type="number" min="1" placeholder="เช่น 48" />
+          </div>
+        </div>
+
+        <div class="two">
+          <div>
+            <label>% งอกของผักนี้ (ถ้าไม่กรอก ใช้ของรอบปลูก)</label>
+            <input id="plantGerm" type="number" min="1" max="100" placeholder="เช่น 75" />
+          </div>
+          <div>
+            <label>ผลคำนวณ (อัปเดตอัตโนมัติ)</label>
+            <div class="mini">
+              <div class="t">ควรเพาะ</div>
+              <div class="v" id="calcSow">—</div>
+              <div class="s" id="calcExtra">—</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn g2" id="btnAddPlantToCycle">＋ เพิ่มผักเข้า “รอบปลูกนี้”</button>
+
+        <div class="hr"></div>
+        <h2>📌 รายการผักในรอบนี้</h2>
+        <div id="cyclePlantsList" class="note">ยังไม่มีผักในรอบนี้</div>
+      </div>
+
+      <div class="card">
+        <h2>🗓️ งานอัตโนมัติ (แก้ได้ทีหลัง)</h2>
+        <div class="note">
+          ระบบสร้างงานจาก “วันเริ่มเพาะ” และกระจายตามไทม์ไลน์มาตรฐานผักสลัด/ใบเขียว  
+          คุณสามารถ “ทำเสร็จแล้ว” หรือ “เลื่อนวัน” ได้ในหน้าบันทึก
+        </div>
+        <div id="tasksList" class="note">ยังไม่มีงาน</div>
+      </div>
+    </section>
+
+    <!-- PAGE: LOG -->
+    <section id="page-log" class="hide">
+      <div class="grid">
+        <div class="card">
+          <h2>🧪 บันทึกสภาพวันนี้</h2>
+          <div class="two">
+            <div>
+              <label>เลือกผัก</label>
+              <select id="healthPlant"></select>
+            </div>
+            <div>
+              <label>สถานะใบ</label>
+              <select id="leafStatus">
+                <option value="ยังไม่มีใบจริง">ยังไม่มีใบจริง</option>
+                <option value="เริ่มมีใบจริง">เริ่มมีใบจริง</option>
+                <option value="ใบจริง 2–3 ใบ">ใบจริง 2–3 ใบ</option>
+                <option value="แข็งแรงปกติ">แข็งแรงปกติ</option>
+                <option value="เริ่มเหี่ยว/ช้ำ">เริ่มเหี่ยว/ช้ำ</option>
+                <option value="มีรา/โคนเน่า">มีรา/โคนเน่า</option>
+              </select>
+            </div>
+          </div>
+          <div class="two">
+            <div>
+              <label>อุณหภูมิ (°C) (ถ้ามี)</label>
+              <input id="tempC" type="number" step="0.1" placeholder="เช่น 29" />
+            </div>
+            <div>
+              <label>วันที่บันทึก (เลือกย้อนหลังได้)</label>
+              <input id="healthDate" type="date" />
+            </div>
+          </div>
+          <div class="two">
+            <div>
+              <label>เวลา (ไทย)</label>
+              <input id="healthTime" type="time" step="1"/>
+            </div>
+            <div>
+              <label>หมายเหตุ</label>
+              <input id="healthNote" placeholder="เช่น ฟองน้ำชื้นดี / เปิดฝาระบาย 10 วินาที" />
+            </div>
+          </div>
+          <button class="btn g3" id="btnSaveHealth">บันทึกสภาพ</button>
+        </div>
+
+        <div class="card">
+          <h2>📒 บันทึกการกระทำ (ทำอะไร/ตอนไหน)</h2>
+
+          <div class="two">
+            <div>
+              <label>เลือกผัก</label>
+              <select id="actPlant"></select>
+            </div>
+            <div>
+              <label>ทำอะไร</label>
+              <select id="actType">
+                <option value="เพาะเมล็ด">เพาะเมล็ด</option>
+                <option value="เช็คความชื้น/เติมน้ำ">เช็คความชื้น/เติมน้ำ</option>
+                <option value="เปิดฝาระบายอากาศ">เปิดฝาระบายอากาศ</option>
+                <option value="เริ่มให้แสง">เริ่มให้แสง</option>
+                <option value="ให้ปุ๋ยอ่อน">ให้ปุ๋ยอ่อน</option>
+                <option value="ย้ายลงถ้วย/ตะกร้า">ย้ายลงถ้วย/ตะกร้า</option>
+                <option value="ย้ายลงทาวเวอร์">ย้ายลงทาวเวอร์</option>
+                <option value="ทำความสะอาดระบบ">ทำความสะอาดระบบ</option>
+                <option value="อื่น ๆ">อื่น ๆ</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="two">
+            <div>
+              <label>วันที่ (เลือกย้อนหลังได้)</label>
+              <input id="actDate" type="date" />
+            </div>
+            <div>
+              <label>เวลา (ไทย)</label>
+              <input id="actTime" type="time" step="1"/>
+            </div>
+          </div>
+
+          <label>รายละเอียดเพิ่มเติม (ถ้ามี)</label>
+          <input id="actNote" placeholder="เช่น กดฟองน้ำให้ชุ่มทั้งก้อน / ปิดฝา 3 วัน" />
+
+          <button class="btn g3" id="btnSaveAct">บันทึกการกระทำ</button>
+
+          <div class="hr"></div>
+          <h2>🗂️ แก้งาน/เลื่อนงาน (ถ้างานอัตโนมัติไม่ตรงจริง)</h2>
+          <div class="note">เลือกงาน แล้วปรับกำหนดใหม่ได้</div>
+          <div class="two">
+            <div>
+              <label>งาน</label>
+              <select id="taskEditSelect"></select>
+            </div>
+            <div>
+              <label>กำหนดใหม่</label>
+              <input id="taskEditDate" type="datetime-local" />
+            </div>
+          </div>
+          <div class="two">
+            <button class="btn outline" id="btnTaskSave">บันทึกการเลื่อนงาน</button>
+            <button class="btn outline" id="btnTaskDone">ทำงานนี้เสร็จแล้ว</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📜 ประวัติล่าสุด</h2>
+        <div id="history" class="note">ยังไม่มีประวัติ</div>
+      </div>
+    </section>
+
+    <!-- PAGE: SETTINGS -->
+    <section id="page-settings" class="hide">
+      <div class="card">
+        <h2>⚙️ ตั้งค่า</h2>
+
+        <div class="okbox">
+          <b>เวลาไทย 100%</b> ระบบใช้ Asia/Bangkok เสมอ และให้คุณเลือกวันที่ย้อนหลังได้แล้ว ✅
+        </div>
+
+        <div class="hr"></div>
+        <h2>🥗 เพิ่ม/แก้รายชื่อผัก</h2>
+        <div class="two">
+          <div>
+            <label>ชื่อผักใหม่</label>
+            <input id="newPlantName" placeholder="เช่น ผักสลัดเขียว / คอส / เรดโอ๊ค" />
+          </div>
+          <div>
+            <label>% งอกเริ่มต้น (ถ้ารู้)</label>
+            <input id="newPlantGerm" type="number" min="1" max="100" placeholder="เช่น 75" />
+          </div>
+        </div>
+        <button class="btn g4" id="btnAddPlant">＋ เพิ่มชื่อผัก</button>
+        <div class="hr"></div>
+        <div id="plantManageList" class="note">—</div>
+
+        <div class="hr"></div>
+        <h2>🔔 การเตือน</h2>
+        <div class="warnbox">
+          <b>โหมดไฟล์ (เปิดจากเครื่อง)</b>: เตือนได้เฉพาะ “ในแอป” (ต้องเปิดแอปไว้) และจะสั่น/เสียงเมื่อถึงเวลา<br/>
+          <b>โหมด PWA + HTTPS</b>: สามารถขอสิทธิ์ Notification ได้ (ต้องมี <code>manifest.json</code> + <code>sw.js</code>)<br/>
+          ผมแถมไฟล์สองตัวด้านล่างให้แล้วครับ
+        </div>
+        <div class="two" style="margin-top:10px">
+          <button class="btn outline" id="btnTestInAppAlert">ทดสอบเตือนในแอป (สั่น/เสียง)</button>
+          <button class="btn outline" id="btnHowToPWA">วิธีเปิด Notification จริง (อ่าน)</button>
+        </div>
+
+        <div class="hr"></div>
+        <h2>🧹 รีเซ็ต</h2>
+        <button class="btn outline" id="btnReset" style="border-color: rgba(239,68,68,.6)">ล้างข้อมูลทั้งหมด (ระวัง!)</button>
+      </div>
+
+      <div class="card">
+        <h2>📌 วิธีเซฟไฟล์ใน iPhone (ฟรี ไม่ต้องลงแอปเสียเงิน)</h2>
+        <ol class="note">
+          <li>เปิดแอป <b>ไฟล์ (Files)</b></li>
+          <li>ไปที่ <b>บน iPhone ของฉัน</b> → สร้างโฟลเดอร์ชื่อ “FarmApp”</li>
+          <li>ในโฟลเดอร์ FarmApp → กด <b>…</b> → <b>เอกสารใหม่ (New Document)</b> (ถ้าไม่มี ให้ใช้ “โน้ต” แล้วแชร์เข้าไฟล์)</li>
+          <li>วางโค้ดนี้ทั้งหมด → บันทึกชื่อ <b>index.html</b></li>
+          <li>แตะไฟล์ index.html → เลือกเปิดด้วย <b>Safari</b></li>
+          <li>ใน Safari กดปุ่มแชร์ → <b>Add to Home Screen</b> เพื่อทำเป็นไอคอนเหมือนแอป</li>
+        </ol>
+      </div>
+    </section>
+  </div>
+
+  <!-- bottom nav -->
+  <div class="nav">
+    <div class="tabs">
+      <div class="tab g1 active" data-go="today"><div class="dot g1"></div>วันนี้</div>
+      <div class="tab g2" data-go="cycles"><div class="dot g2"></div>รอบปลูก</div>
+      <div class="tab g3" data-go="log"><div class="dot g3"></div>บันทึก</div>
+      <div class="tab g4" data-go="settings"><div class="dot g4"></div>ตั้งค่า</div>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   TIME (THAILAND) 100%
+========================= */
+function getThaiNow() {
+  const now = new Date();
+  const date = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Bangkok" }); // YYYY-MM-DD
+  const time = now.toLocaleTimeString("th-TH", {
+    timeZone: "Asia/Bangkok",
+    hour: "2-digit", minute: "2-digit", second: "2-digit"
+  });
+  const hhmmss = time;
+  return { now, date, time: hhmmss };
+}
+function toThaiDateTimeLocalInput(isoLikeDate, hhmmss){
+  // returns "YYYY-MM-DDTHH:MM"
+  const [hh,mm] = (hhmmss || "00:00:00").split(":");
+  return `${isoLikeDate}T${hh}:${mm}`;
+}
+function formatThaiHuman(dateYYYYMMDD, timeHHMMSS){
+  // e.g. 2026-01-25 22:16:34
+  return `${dateYYYYMMDD} ${timeHHMMSS}`;
+}
+function parseDateTimeToMs(dateYYYYMMDD, timeHHMMSS){
+  // create a Date in Asia/Bangkok without UTC drift:
+  // trick: build string with explicit +07:00 offset
+  const [hh,mm,ss] = (timeHHMMSS || "00:00:00").split(":");
+  const s = `${dateYYYYMMDD}T${hh}:${mm}:${ss}+07:00`;
+  return new Date(s).getTime();
+}
+
+/* =========================
+   STORAGE
+========================= */
+const LS_KEY = "farm_planner_v1";
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function saveDB(){
+  localStorage.setItem(LS_KEY, JSON.stringify(db));
+}
+function uid(prefix="id"){
+  return prefix + "_" + Math.random().toString(36).slice(2,9) + "_" + Date.now().toString(36);
+}
+
+/* =========================
+   DEFAULTS
+========================= */
+const DEFAULT_PLANTS = [
+  { id:"p_mix", name:"สลัดมิกซ์", defaultGerm:75 },
+  { id:"p_green", name:"ผักสลัดเขียว", defaultGerm:80 },
+  { id:"p_redoak", name:"เรดโอ๊ค", defaultGerm:75 },
+  { id:"p_greenoak", name:"กรีนโอ๊ค", defaultGerm:75 },
+  { id:"p_cos", name:"คอส", defaultGerm:80 },
+  { id:"p_butter", name:"บัตเตอร์เฮด", defaultGerm:75 },
+  { id:"p_kale", name:"เคล", defaultGerm:75 },
+  { id:"p_bok", name:"ผักกาดฮ่องเต้", defaultGerm:85 },
+  { id:"p_rocket", name:"ร็อกเก็ต", defaultGerm:70 }
+];
+
+/*
+  TIMELINE TEMPLATE (days after sowing)
+  คุณสามารถปรับวันได้ทีหลังในหน้า บันทึก > แก้งาน/เลื่อนงาน
+*/
+const TASK_TEMPLATE = [
+  { day:0,  title:"เพาะเมล็ด", detail:"กดฟองน้ำให้ชุ่มทั้งก้อน / หยอดเมล็ด / ปิดฝา", type:"เพาะเมล็ด" },
+  { day:1,  title:"เช็คความชื้น", detail:"เปิดเช็คสั้น ๆ 10 วินาที + พรมถ้าแห้ง", type:"เช็คความชื้น/เติมน้ำ" },
+  { day:2,  title:"เช็คความชื้น", detail:"คุมความชื้นให้สม่ำเสมอ (อย่าแฉะ)", type:"เช็คความชื้น/เติมน้ำ" },
+  { day:3,  title:"เปิดฝาระบายอากาศ", detail:"เปิดฝาวันละ 1–2 ครั้ง ลดรา (ถ้ายังไม่งอกก็ชื้นไว้)", type:"เปิดฝาระบายอากาศ" },
+  { day:4,  title:"เริ่มรับแสงอ่อน", detail:"ให้แสงเช้าอ่อน ๆ / อย่าโดนแดดแรง", type:"เริ่มให้แสง" },
+  { day:7,  title:"เริ่มปุ๋ยอ่อน", detail:"เริ่มปุ๋ย AB อ่อนมาก (เช่น 1/4) ถ้ารากเริ่มเดิน", type:"ให้ปุ๋ยอ่อน" },
+  { day:10, title:"ย้ายลงถ้วย/ตะกร้า", detail:"ถ้าใบจริง 2 ใบ + รากแข็งแรง", type:"ย้ายลงถ้วย/ตะกร้า" },
+  { day:14, title:"ย้ายลงทาวเวอร์", detail:"เมื่อแข็งแรงพอ/รากยาวถึงน้ำ", type:"ย้ายลงทาวเวอร์" },
+  { day:21, title:"ตรวจ EC/น้ำ/ตะไคร่", detail:"ปรับความเข้มปุ๋ย/ป้องกันน้ำร้อน/กันแสงเข้าถัง", type:"ทำความสะอาดระบบ" }
+];
+
+/* =========================
+   DB SCHEMA
+========================= */
+let db = loadDB();
+if(!db){
+  const thai = getThaiNow();
+  db = {
+    version:1,
+    settings: {
+      timezone: "Asia/Bangkok",
+      inAppAlert: { enabled:true, vibrate:true, sound:true }
+    },
+    plants: DEFAULT_PLANTS,
+    cycles: [
+      {
+        id:"c_first",
+        name:"รอบแรก",
+        startDate: thai.date,
+        note:"เมล็ดแถม งอก 75%",
+        germDefault:75,
+        targetHoles:48,
+        plantsInCycle: [], // { plantId, desired, germUsed, sow, extra, sowDate }
+        tasks: [], // generated per plant
+        createdAt: formatThaiHuman(thai.date, thai.time)
+      }
+    ],
+    activeCycleId: "c_first",
+    logs: {
+      actions: [], // {id, cycleId, plantId, type, date, time, note}
+      health: []   // {id, cycleId, plantId, leafStatus, tempC, date, time, note}
+    }
+  };
+  saveDB();
+}
+
+/* =========================
+   HELPERS
+========================= */
+function getActiveCycle(){
+  return db.cycles.find(c=>c.id===db.activeCycleId) || db.cycles[0];
+}
+function getPlantById(pid){
+  return db.plants.find(p=>p.id===pid);
+}
+function calcSow(desired, germPercent){
+  const g = Math.max(1, Math.min(100, Number(germPercent || 75)));
+  const d = Math.max(1, Number(desired || 1));
+  const sow = Math.ceil(d / (g/100));
+  const extra = sow - d;
+  return { sow, extra, g, d };
+}
+function daysAfter(dateYYYYMMDD, addDays){
+  const base = new Date(`${dateYYYYMMDD}T00:00:00+07:00`).getTime();
+  const ms = base + (addDays*24*60*60*1000);
+  const dt = new Date(ms);
+  const y = dt.toLocaleDateString("sv-SE", { timeZone:"Asia/Bangkok" });
+  return y;
+}
+function msToHuman(ms){
+  if(ms <= 0) return "ถึงเวลาแล้ว";
+  const s = Math.floor(ms/1000);
+  const d = Math.floor(s/86400);
+  const h = Math.floor((s%86400)/3600);
+  const m = Math.floor((s%3600)/60);
+  const sec = s%60;
+  if(d>0) return `${d} วัน ${h} ชม. ${m} นาที`;
+  if(h>0) return `${h} ชม. ${m} นาที`;
+  if(m>0) return `${m} นาที ${sec} วิ`;
+  return `${sec} วิ`;
+}
+function escapeHtml(str){
+  return String(str||"")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;")
+    .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/* =========================
+   UI: NAV
+========================= */
+const pages = {
+  today: document.getElementById("page-today"),
+  cycles: document.getElementById("page-cycles"),
+  log: document.getElementById("page-log"),
+  settings: document.getElementById("page-settings"),
+};
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click", ()=>{
+    const go = t.dataset.go;
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active","g1","g2","g3","g4"));
+    t.classList.add("active", "g"+(go==="today"?1:go==="cycles"?2:go==="log"?3:4));
+    Object.values(pages).forEach(p=>p.classList.add("hide"));
+    pages[go].classList.remove("hide");
+    renderAll();
+  });
+});
+
+/* =========================
+   UI: ELEMENTS
+========================= */
+const nowLine = document.getElementById("nowLine");
+const activeCycleName = document.getElementById("activeCycleName");
+const cycleChip = document.getElementById("cycleChip");
+
+const nextTaskTitle = document.getElementById("nextTaskTitle");
+const nextTaskMeta = document.getElementById("nextTaskMeta");
+const countdown = document.getElementById("countdown");
+const countdownHint = document.getElementById("countdownHint");
+const btnMarkDone = document.getElementById("btnMarkDone");
+const todayList = document.getElementById("todayList");
+
+const btnExport = document.getElementById("btnExport");
+const btnImport = document.getElementById("btnImport");
+const fileImport = document.getElementById("fileImport");
+
+const cycleSelect = document.getElementById("cycleSelect");
+const cycleInfo = document.getElementById("cycleInfo");
+const cycleNote = document.getElementById("cycleNote");
+const btnSaveCycleNote = document.getElementById("btnSaveCycleNote");
+
+const newCycleName = document.getElementById("newCycleName");
+const newCycleStart = document.getElementById("newCycleStart");
+const newCycleGerm = document.getElementById("newCycleGerm");
+const newCycleTargetHoles = document.getElementById("newCycleTargetHoles");
+const btnCreateCycle = document.getElementById("btnCreateCycle");
+
+const plantSelect = document.getElementById("plantSelect");
+const desiredHoles = document.getElementById("desiredHoles");
+const plantGerm = document.getElementById("plantGerm");
+const calcSowEl = document.getElementById("calcSow");
+const calcExtraEl = document.getElementById("calcExtra");
+const btnAddPlantToCycle = document.getElementById("btnAddPlantToCycle");
+const cyclePlantsList = document.getElementById("cyclePlantsList");
+const tasksList = document.getElementById("tasksList");
+
+const healthPlant = document.getElementById("healthPlant");
+const leafStatus = document.getElementById("leafStatus");
+const tempC = document.getElementById("tempC");
+const healthDate = document.getElementById("healthDate");
+const healthTime = document.getElementById("healthTime");
+const healthNote = document.getElementById("healthNote");
+const btnSaveHealth = document.getElementById("btnSaveHealth");
+
+const actPlant = document.getElementById("actPlant");
+const actType = document.getElementById("actType");
+const actDate = document.getElementById("actDate");
+const actTime = document.getElementById("actTime");
+const actNote = document.getElementById("actNote");
+const btnSaveAct = document.getElementById("btnSaveAct");
+
+const taskEditSelect = document.getElementById("taskEditSelect");
+const taskEditDate = document.getElementById("taskEditDate");
+const btnTaskSave = document.getElementById("btnTaskSave");
+const btnTaskDone = document.getElementById("btnTaskDone");
+
+const historyEl = document.getElementById("history");
+
+const newPlantName = document.getElementById("newPlantName");
+const newPlantGerm = document.getElementById("newPlantGerm");
+const btnAddPlant = document.getElementById("btnAddPlant");
+const plantManageList = document.getElementById("plantManageList");
+
+const btnTestInAppAlert = document.getElementById("btnTestInAppAlert");
+const btnHowToPWA = document.getElementById("btnHowToPWA");
+const btnReset = document.getElementById("btnReset");
+
+function setDefaultDatesTimes(){
+  const thai = getThaiNow();
+  // default to today Thai
+  if(newCycleStart) newCycleStart.value = thai.date;
+  if(healthDate) healthDate.value = thai.date;
+  if(actDate) actDate.value = thai.date;
+  // default time to now
+  const t = thai.time;
+  if(healthTime) healthTime.value = t.slice(0,8);
+  if(actTime) actTime.value = t.slice(0,8);
+}
+setDefaultDatesTimes();
+
+/* =========================
+   RENDER
+========================= */
+function renderHeader(){
+  const thai = getThaiNow();
+  nowLine.textContent = `เวลาไทย: ${thai.date} • ${thai.time}`;
+  const c = getActiveCycle();
+  activeCycleName.textContent = c?.name || "—";
+}
+
+function renderCycleSelect(){
+  cycleSelect.innerHTML = "";
+  db.cycles.forEach(c=>{
+    const opt = document.createElement("option");
+    opt.value = c.id;
+    opt.textContent = c.name;
+    if(c.id === db.activeCycleId) opt.selected = true;
+    cycleSelect.appendChild(opt);
+  });
+  cycleSelect.onchange = ()=>{
+    db.activeCycleId = cycleSelect.value;
+    saveDB();
+    renderAll();
+  };
+
+  const c = getActiveCycle();
+  cycleNote.value = c.note || "";
+  cycleInfo.innerHTML = `
+    <div class="note">
+      เริ่ม: <b>${escapeHtml(c.startDate)}</b> •
+      อัตรางอกเริ่มต้น: <b>${escapeHtml(c.germDefault || 75)}%</b> •
+      เป้าหมายหลุม: <b>${escapeHtml(c.targetHoles || "-")}</b><br/>
+      หมายเหตุ: <span class="muted">${escapeHtml(c.note || "-")}</span>
+    </div>`;
+}
+
+function renderPlantOptions(){
+  const opts = db.plants
+    .slice()
+    .sort((a,b)=>a.name.localeCompare(b.name,"th"));
+
+  function fill(selectEl){
+    selectEl.innerHTML = "";
+    opts.forEach(p=>{
+      const o = document.createElement("option");
+      o.value = p.id;
+      o.textContent = p.name;
+      selectEl.appendChild(o);
+    });
+  }
+  fill(plantSelect);
+  fill(healthPlant);
+  fill(actPlant);
+
+  // default select to salad mix if exists
+  const mix = db.plants.find(p=>p.name==="สลัดมิกซ์") || db.plants.find(p=>p.id==="p_mix");
+  if(mix){
+    plantSelect.value = mix.id;
+    healthPlant.value = mix.id;
+    actPlant.value = mix.id;
+  }
+}
+
+function renderCalc(){
+  const c = getActiveCycle();
+  const d = Number(desiredHoles.value || c.targetHoles || 48);
+  const pid = plantSelect.value;
+  const plant = getPlantById(pid);
+  const g = plantGerm.value ? Number(plantGerm.value) : (plant?.defaultGerm || c.germDefault || 75);
+  const r = calcSow(d, g);
+  calcSowEl.textContent = `${r.sow} หลุม`;
+  calcExtraEl.textContent = `เพาะเผื่อ ${r.extra} หลุม (งอก ${r.g}%)`;
+}
+desiredHoles.addEventListener("input", renderCalc);
+plantGerm.addEventListener("input", renderCalc);
+plantSelect.addEventListener("change", ()=>{
+  const c = getActiveCycle();
+  const plant = getPlantById(plantSelect.value);
+  // auto fill desired from target holes
+  desiredHoles.value = String(c.targetHoles || 48);
+  plantGerm.value = "";
+  renderCalc();
+});
+
+function renderCyclePlants(){
+  const c = getActiveCycle();
+  if(!c.plantsInCycle?.length){
+    cyclePlantsList.innerHTML = `<div class="note">ยังไม่มีผักในรอบนี้</div>`;
+    return;
+  }
+  const items = c.plantsInCycle.map(pi=>{
+    const p = getPlantById(pi.plantId);
+    return `
+      <div class="item">
+        <div class="top">
+          <div>
+            <div class="title">${escapeHtml(p?.name || "—")}</div>
+            <div class="meta">
+              เป้าหมาย: <b>${pi.desired}</b> หลุม • เพาะ: <b>${pi.sow}</b> หลุม (เผื่อ ${pi.extra}) • งอก ${pi.germUsed}%<br/>
+              วันเพาะ: <b>${escapeHtml(pi.sowDate || c.startDate)}</b>
+            </div>
+          </div>
+          <span class="badge b-info">ปลูกในรอบนี้</span>
+        </div>
+        <div class="actions">
+          <button class="smallbtn warn" onclick="removePlantFromCycle('${pi.id}')">ลบ</button>
+          <button class="smallbtn" onclick="regenTasksForPlant('${pi.id}')">สร้างงานใหม่</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  cyclePlantsList.innerHTML = items;
+}
+
+function renderTasks(){
+  const c = getActiveCycle();
+  const all = (c.tasks || []).slice().sort((a,b)=>a.dueMs-b.dueMs);
+
+  if(!all.length){
+    tasksList.innerHTML = `<div class="note">ยังไม่มีงาน (เพิ่มผักในรอบปลูกก่อน)</div>`;
+    taskEditSelect.innerHTML = `<option value="">—</option>`;
+    return;
+  }
+
+  // fill edit select
+  taskEditSelect.innerHTML = "";
+  all.forEach(t=>{
+    const p = getPlantById(t.plantId);
+    const o = document.createElement("option");
+    o.value = t.id;
+    o.textContent = `${p?.name || "—"} • ${t.title} • ${t.dueDate} ${t.dueTime}`;
+    taskEditSelect.appendChild(o);
+  });
+
+  // render cards
+  tasksList.innerHTML = all.map(t=>{
+    const p = getPlantById(t.plantId);
+    const status = t.done ? `<span class="badge b-ok">เสร็จแล้ว</span>` : `<span class="badge b-warn">รอทำ</span>`;
+    return `
+      <div class="item">
+        <div class="top">
+          <div>
+            <div class="title">${escapeHtml(p?.name || "—")} — ${escapeHtml(t.title)}</div>
+            <div class="meta">
+              กำหนด: <b>${escapeHtml(t.dueDate)} ${escapeHtml(t.dueTime)}</b><br/>
+              ${escapeHtml(t.detail || "")}
+            </div>
+          </div>
+          ${status}
+        </div>
+        <div class="actions">
+          ${t.done ? "" : `<button class="smallbtn ok" onclick="markTaskDone('${t.id}')">ทำเสร็จแล้ว</button>`}
+          <button class="smallbtn" onclick="quickShiftTask('${t.id}', 1)">เลื่อน +1 วัน</button>
+          <button class="smallbtn" onclick="quickShiftTask('${t.id}', -1)">เลื่อน -1 วัน</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderHistory(){
+  const c = getActiveCycle();
+  const acts = db.logs.actions.filter(x=>x.cycleId===c.id);
+  const healths = db.logs.health.filter(x=>x.cycleId===c.id);
+
+  const merged = [
+    ...acts.map(a=>({kind:"act", ...a, sortMs: parseDateTimeToMs(a.date, a.time)})),
+    ...healths.map(h=>({kind:"health", ...h, sortMs: parseDateTimeToMs(h.date, h.time)})),
+  ].sort((a,b)=>b.sortMs - a.sortMs).slice(0,30);
+
+  if(!merged.length){
+    historyEl.innerHTML = `<div class="note">ยังไม่มีประวัติ</div>`;
+    return;
+  }
+
+  historyEl.innerHTML = merged.map(x=>{
+    const p = getPlantById(x.plantId);
+    if(x.kind==="act"){
+      return `
+        <div class="item">
+          <div class="top">
+            <div>
+              <div class="title">${escapeHtml(x.date)} ${escapeHtml(x.time)} — ${escapeHtml(p?.name||"—")}</div>
+              <div class="meta">↳ ${escapeHtml(x.type)} ${x.note?`• ${escapeHtml(x.note)}`:""}</div>
+            </div>
+            <span class="badge b-info">บันทึกการกระทำ</span>
+          </div>
+        </div>
+      `;
+    }else{
+      return `
+        <div class="item">
+          <div class="top">
+            <div>
+              <div class="title">${escapeHtml(x.date)} ${escapeHtml(x.time)} — ${escapeHtml(p?.name||"—")}</div>
+              <div class="meta">ใบ: <b>${escapeHtml(x.leafStatus)}</b> ${x.tempC?`• ${escapeHtml(x.tempC)}°C`:""} ${x.note?`• ${escapeHtml(x.note)}`:""}</div>
+            </div>
+            <span class="badge b-warn">สภาพวันนี้</span>
+          </div>
+        </div>
+      `;
+    }
+  }).join("");
+}
+
+function renderPlantManage(){
+  const list = db.plants.slice().sort((a,b)=>a.name.localeCompare(b.name,"th"));
+  plantManageList.innerHTML = list.map(p=>{
+    const lock = (p.id.startsWith("p_")) ? "" : "";
+    return `
+      <div class="item">
+        <div class="top">
+          <div>
+            <div class="title">${escapeHtml(p.name)}</div>
+            <div class="meta">ค่าเริ่มต้นอัตรางอก: <b>${escapeHtml(p.defaultGerm || "-")}%</b></div>
+          </div>
+          <span class="badge b-info">ตัวเลือก</span>
+        </div>
+        <div class="actions">
+          ${p.id.startsWith("p_") ? "" : `<button class="smallbtn danger" onclick="deletePlant('${p.id}')">ลบชื่อผัก</button>`}
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function renderToday(){
+  const c = getActiveCycle();
+  const thai = getThaiNow();
+  const nowMs = parseDateTimeToMs(thai.date, thai.time);
+
+  // find next not-done task
+  const pending = (c.tasks || []).filter(t=>!t.done).sort((a,b)=>a.dueMs-b.dueMs);
+  const next = pending[0];
+
+  if(!next){
+    nextTaskTitle.textContent = "—";
+    nextTaskMeta.textContent = "ยังไม่มีงาน";
+    countdown.textContent = "—";
+    countdownHint.textContent = "เพิ่มผักในรอบปลูกก่อน";
+    todayList.innerHTML = `<div class="note">วันนี้ยังไม่มีงานถึงกำหนด (แต่เปิดเช็คสั้น ๆ ได้)</div>`;
+    btnMarkDone.disabled = true;
+    btnMarkDone.style.opacity = .6;
+    return;
+  }
+
+  btnMarkDone.disabled = false;
+  btnMarkDone.style.opacity = 1;
+
+  const p = getPlantById(next.plantId);
+  nextTaskTitle.textContent = `${p?.name || "—"}: ${next.title}`;
+  nextTaskMeta.textContent = `กำหนด: ${next.dueDate} ${next.dueTime}`;
+
+  const diff = next.dueMs - nowMs;
+  countdown.textContent = msToHuman(diff);
+  countdownHint.textContent = diff>0 ? "จนถึงกำหนด" : "เลยกำหนดแล้ว (ควรทำวันนี้)";
+
+  // list tasks due today or overdue
+  const startOfToday = parseDateTimeToMs(thai.date, "00:00:00");
+  const endOfToday = parseDateTimeToMs(thai.date, "23:59:59");
+  const dueToday = (c.tasks || []).filter(t=>!t.done && t.dueMs>=startOfToday && t.dueMs<=endOfToday);
+  const overdue = (c.tasks || []).filter(t=>!t.done && t.dueMs<startOfToday);
+  const allShow = [...overdue.sort((a,b)=>a.dueMs-b.dueMs), ...dueToday.sort((a,b)=>a.dueMs-b.dueMs)];
+
+  todayList.innerHTML = allShow.length ? `
+    <ul class="list">
+      ${allShow.map(t=>{
+        const pp = getPlantById(t.plantId);
+        const isOver = t.dueMs < startOfToday;
+        const badge = isOver ? `<span class="badge b-danger">เลยกำหนด</span>` : `<span class="badge b-warn">วันนี้</span>`;
+        return `
+          <li class="item">
+            <div class="top">
+              <div>
+                <div class="title">${escapeHtml(pp?.name||"—")} — ${escapeHtml(t.title)}</div>
+                <div class="meta">กำหนด: <b>${escapeHtml(t.dueDate)} ${escapeHtml(t.dueTime)}</b><br/>${escapeHtml(t.detail||"")}</div>
+              </div>
+              ${badge}
+            </div>
+          </li>
+        `;
+      }).join("")}
+    </ul>
+  ` : `<div class="note">วันนี้ยังไม่มีงานถึงกำหนด (แต่เปิดเช็คสั้น ๆ ได้)</div>`;
+}
+
+function renderTaskEditDate(){
+  const c = getActiveCycle();
+  const tid = taskEditSelect.value;
+  const t = (c.tasks || []).find(x=>x.id===tid);
+  if(!t){ taskEditDate.value=""; return; }
+  taskEditDate.value = toThaiDateTimeLocalInput(t.dueDate, t.dueTime);
+}
+taskEditSelect.addEventListener("change", renderTaskEditDate);
+
+function renderAll(){
+  renderHeader();
+  renderCycleSelect();
+  renderPlantOptions();
+  renderCalc();
+  renderCyclePlants();
+  renderTasks();
+  renderTaskEditDate();
+  renderToday();
+  renderHistory();
+  renderPlantManage();
+}
+renderAll();
+
+/* =========================
+   ACTIONS: cycles/plants/tasks
+========================= */
+btnSaveCycleNote.addEventListener("click", ()=>{
+  const c = getActiveCycle();
+  c.note = cycleNote.value.trim();
+  saveDB();
+  renderAll();
+});
+
+btnCreateCycle.addEventListener("click", ()=>{
+  const name = (newCycleName.value || "").trim() || "รอบใหม่";
+  const start = newCycleStart.value || getThaiNow().date;
+  const germ = Number(newCycleGerm.value || 75);
+  const target = Number(newCycleTargetHoles.value || 48);
+  const thai = getThaiNow();
+
+  const nc = {
+    id: uid("cycle"),
+    name,
+    startDate: start,
+    note: "",
+    germDefault: Math.max(1, Math.min(100, germ)),
+    targetHoles: Math.max(1, target),
+    plantsInCycle: [],
+    tasks: [],
+    createdAt: formatThaiHuman(thai.date, thai.time)
+  };
+  db.cycles.unshift(nc);
+  db.activeCycleId = nc.id;
+  saveDB();
+  newCycleName.value="";
+  newCycleGerm.value="";
+  renderAll();
+});
+
+btnAddPlantToCycle.addEventListener("click", ()=>{
+  const c = getActiveCycle();
+  const pid = plantSelect.value;
+  const plant = getPlantById(pid);
+  if(!plant) return alert("ไม่พบชื่อผัก");
+
+  const desired = Number(desiredHoles.value || c.targetHoles || 48);
+  const germUsed = plantGerm.value ? Number(plantGerm.value) : (plant.defaultGerm || c.germDefault || 75);
+  const r = calcSow(desired, germUsed);
+
+  // sow date = cycle start by default
+  const sowDate = c.startDate;
+
+  // prevent duplicates (same plant)
+  const already = c.plantsInCycle.find(x=>x.plantId===pid);
+  if(already){
+    if(!confirm("ผักนี้มีอยู่ในรอบแล้ว ต้องการเพิ่มซ้ำอีกครั้งไหม?")) return;
+  }
+
+  const pi = {
+    id: uid("pi"),
+    plantId: pid,
+    desired: r.d,
+    germUsed: r.g,
+    sow: r.sow,
+    extra: r.extra,
+    sowDate
+  };
+  c.plantsInCycle.push(pi);
+
+  // generate tasks for this plant
+  generateTasksForPlant(c, pi);
+
+  saveDB();
+  renderAll();
+});
+
+function removePlantFromCycle(piId){
+  const c = getActiveCycle();
+  if(!confirm("ลบผักนี้ออกจากรอบปลูก + ลบงานที่เกี่ยวข้อง?")) return;
+  const pi = c.plantsInCycle.find(x=>x.id===piId);
+  if(!pi) return;
+
+  c.plantsInCycle = c.plantsInCycle.filter(x=>x.id!==piId);
+  c.tasks = (c.tasks||[]).filter(t=>t.plantId!==pi.plantId);
+  saveDB();
+  renderAll();
+}
+
+function regenTasksForPlant(piId){
+  const c = getActiveCycle();
+  const pi = c.plantsInCycle.find(x=>x.id===piId);
+  if(!pi) return;
+  if(!confirm("สร้างงานใหม่ (จะลบงานเดิมของผักนี้ แล้วสร้างใหม่ตามเทมเพลต) ?")) return;
+  c.tasks = (c.tasks||[]).filter(t=>t.plantId!==pi.plantId);
+  generateTasksForPlant(c, pi);
+  saveDB();
+  renderAll();
+}
+
+function generateTasksForPlant(cycle, plantInCycle){
+  const pid = plantInCycle.plantId;
+  const sowDate = plantInCycle.sowDate || cycle.startDate;
+  TASK_TEMPLATE.forEach(tpl=>{
+    const dueDate = daysAfter(sowDate, tpl.day);
+    const dueTime = tpl.day===0 ? "08:00:00" : "08:30:00"; // ตั้งเวลาเริ่มต้น
+    const dueMs = parseDateTimeToMs(dueDate, dueTime);
+    cycle.tasks.push({
+      id: uid("task"),
+      plantId: pid,
+      title: tpl.title,
+      detail: tpl.detail,
+      type: tpl.type,
+      dueDate, dueTime, dueMs,
+      done:false
+    });
+  });
+}
+
+function markTaskDone(taskId){
+  const c = getActiveCycle();
+  const t = (c.tasks||[]).find(x=>x.id===taskId);
+  if(!t) return;
+  t.done = true;
+
+  // auto log action when mark done
+  const thai = getThaiNow();
+  db.logs.actions.push({
+    id: uid("act"),
+    cycleId: c.id,
+    plantId: t.plantId,
+    type: t.type || t.title,
+    date: thai.date,
+    time: thai.time,
+    note: `ทำเสร็จจาก “งานอัตโนมัติ”: ${t.title}`
+  });
+
+  saveDB();
+  renderAll();
+}
+
+function quickShiftTask(taskId, deltaDays){
+  const c = getActiveCycle();
+  const t = (c.tasks||[]).find(x=>x.id===taskId);
+  if(!t) return;
+  // shift by deltaDays
+  const baseMs = parseDateTimeToMs(t.dueDate, t.dueTime);
+  const newMs = baseMs + deltaDays*24*60*60*1000;
+  const dt = new Date(newMs);
+  const newDate = dt.toLocaleDateString("sv-SE", { timeZone:"Asia/Bangkok" });
+  const newTime = dt.toLocaleTimeString("th-TH", {
+    timeZone:"Asia/Bangkok", hour:"2-digit", minute:"2-digit", second:"2-digit"
+  });
+  t.dueDate = newDate;
+  t.dueTime = newTime;
+  t.dueMs = parseDateTimeToMs(newDate, newTime);
+  saveDB();
+  renderAll();
+}
+
+/* =========================
+   TODAY: mark next done + in-app alert
+========================= */
+btnMarkDone.addEventListener("click", ()=>{
+  const c = getActiveCycle();
+  const pending = (c.tasks||[]).filter(t=>!t.done).sort((a,b)=>a.dueMs-b.dueMs);
+  const next = pending[0];
+  if(!next) return;
+  markTaskDone(next.id);
+});
+
+// In-app alert when due (works while app is open)
+let lastAlertTaskId = null;
+function inAppAlert(title, detail){
+  try{
+    if(db.settings.inAppAlert.vibrate && navigator.vibrate){
+      navigator.vibrate([120,80,120]);
+    }
+    if(db.settings.inAppAlert.sound){
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = 880;
+      g.gain.value = 0.05;
+      o.connect(g); g.connect(ctx.destination);
+      o.start();
+      setTimeout(()=>{ o.stop(); ctx.close(); }, 180);
+    }
+  }catch(e){}
+  alert(`${title}\n\n${detail||""}`);
+}
+
+function tick(){
+  renderHeader(); // update time line
+  const c = getActiveCycle();
+  const thai = getThaiNow();
+  const nowMs = parseDateTimeToMs(thai.date, thai.time);
+
+  const next = (c.tasks||[]).filter(t=>!t.done).sort((a,b)=>a.dueMs-b.dueMs)[0];
+  if(next){
+    const diff = next.dueMs - nowMs;
+    // alert when crossing due time (once)
+    if(db.settings.inAppAlert.enabled && diff<=0 && lastAlertTaskId !== next.id){
+      lastAlertTaskId = next.id;
+      const p = getPlantById(next.plantId);
+      inAppAlert("ถึงเวลาแล้ว ✅", `${p?.name || "—"}: ${next.title}\nกำหนด: ${next.dueDate} ${next.dueTime}`);
+    }
+  }
+  renderToday();
+}
+setInterval(tick, 1000);
+
+/* =========================
+   LOGGING
+========================= */
+function setLogDefaults(){
+  const thai = getThaiNow();
+  healthDate.value = thai.date;
+  actDate.value = thai.date;
+  healthTime.value = thai.time;
+  actTime.value = thai.time;
+}
+setLogDefaults();
+
+btnSaveHealth.addEventListener("click", ()=>{
+  const c = getActiveCycle();
+  const pid = healthPlant.value;
+  const date = healthDate.value || getThaiNow().date;
+  const time = (healthTime.value || getThaiNow().time);
+  const rec = {
+    id: uid("health"),
+    cycleId: c.id,
+    plantId: pid,
+    leafStatus: leafStatus.value,
+    tempC: tempC.value ? Number(tempC.value) : null,
+    date,
+    time: time.length===5 ? (time+":00") : time,
+    note: (healthNote.value||"").trim()
+  };
+  db.logs.health.push(rec);
+  saveDB();
+  healthNote.value="";
+  tempC.value="";
+  renderAll();
+});
+
+btnSaveAct.addEventListener("click", ()=>{
+  const c = getActiveCycle();
+  const pid = actPlant.value;
+  const date = actDate.value || getThaiNow().date;
+  const time = (actTime.value || getThaiNow().time);
+  const rec = {
+    id: uid("act"),
+    cycleId: c.id,
+    plantId: pid,
+    type: actType.value,
+    date,
+    time: time.length===5 ? (time+":00") : time,
+    note: (actNote.value||"").trim()
+  };
+  db.logs.actions.push(rec);
+
+  // special: if action is "เพาะเมล็ด" and plant exists in cycle, offer regen schedule
+  if(actType.value==="เพาะเมล็ด"){
+    const pi = c.plantsInCycle.find(x=>x.plantId===pid);
+    if(pi){
+      // update sowDate to selected date, regen tasks optional
+      if(confirm("ต้องการให้ “วันเพาะ” ของผักนี้ = วันที่ที่คุณบันทึก และสร้างงานใหม่ตามวันเพาะไหม?")){
+        pi.sowDate = date;
+        c.tasks = (c.tasks||[]).filter(t=>t.plantId!==pid);
+        generateTasksForPlant(c, pi);
+      }
+    }
+  }
+
+  saveDB();
+  actNote.value="";
+  renderAll();
+});
+
+btnTaskSave.addEventListener("click", ()=>{
+  const c = getActiveCycle();
+  const tid = taskEditSelect.value;
+  const t = (c.tasks||[]).find(x=>x.id===tid);
+  if(!t) return;
+
+  // taskEditDate is datetime-local (no tz) but represents user local -> treat as Bangkok
+  const val = taskEditDate.value; // "YYYY-MM-DDTHH:MM"
+  if(!val) return alert("กรุณาเลือกวัน/เวลาใหม่");
+  const [d, hm] = val.split("T");
+  const dueDate = d;
+  const dueTime = (hm.length===5 ? hm+":00" : hm);
+  t.dueDate = dueDate;
+  t.dueTime = dueTime;
+  t.dueMs = parseDateTimeToMs(dueDate, dueTime);
+
+  saveDB();
+  renderAll();
+});
+
+btnTaskDone.addEventListener("click", ()=>{
+  const c = getActiveCycle();
+  const tid = taskEditSelect.value;
+  if(!tid) return;
+  markTaskDone(tid);
+});
+
+/* =========================
+   PLANT MANAGE
+========================= */
+btnAddPlant.addEventListener("click", ()=>{
+  const name = (newPlantName.value||"").trim();
+  if(!name) return alert("กรุณากรอกชื่อผัก");
+  // prevent dup
+  if(db.plants.some(p=>p.name.toLowerCase()===name.toLowerCase())){
+    return alert("ชื่อนี้มีอยู่แล้ว");
+  }
+  const g = newPlantGerm.value ? Number(newPlantGerm.value) : null;
+  db.plants.push({
+    id: uid("plant"),
+    name,
+    defaultGerm: g ? Math.max(1, Math.min(100, g)) : null
+  });
+  saveDB();
+  newPlantName.value="";
+  newPlantGerm.value="";
+  renderAll();
+});
+
+function deletePlant(pid){
+  if(!confirm("ลบชื่อผักนี้ออกจากรายการ? (ประวัติเดิมจะยังอยู่แต่แสดงชื่อไม่ได้)")) return;
+  // do not delete defaults with p_
+  if(pid.startsWith("p_")) return alert("รายการนี้เป็นค่าเริ่มต้น ลบไม่ได้");
+  db.plants = db.plants.filter(p=>p.id!==pid);
+  saveDB();
+  renderAll();
+}
+
+/* =========================
+   EXPORT/IMPORT
+========================= */
+btnExport.addEventListener("click", ()=>{
+  const data = JSON.stringify(db, null, 2);
+  const blob = new Blob([data], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `farm_planner_backup_${getThaiNow().date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+btnImport.addEventListener("click", ()=> fileImport.click());
+fileImport.addEventListener("change", async (e)=>{
+  const f = e.target.files?.[0];
+  if(!f) return;
+  const text = await f.text();
+  try{
+    const obj = JSON.parse(text);
+    if(!obj || !obj.cycles) throw new Error("format");
+    db = obj;
+    saveDB();
+    alert("นำเข้าข้อมูลสำเร็จ");
+    renderAll();
+  }catch(err){
+    alert("ไฟล์ไม่ถูกต้อง");
+  }finally{
+    fileImport.value = "";
+  }
+});
+
+/* =========================
+   SETTINGS: test alert + how to pwa + reset
+========================= */
+btnTestInAppAlert.addEventListener("click", ()=>{
+  inAppAlert("ทดสอบเตือนในแอป", "ถ้าเครื่องรองรับจะสั่น/มีเสียง และมีแจ้งเตือนภายในแอป");
+});
+
+btnHowToPWA.addEventListener("click", ()=>{
+  alert(
+`เปิด Notification จริงบน iPhone (แนวทางย่อ):
+1) ต้องโฮสต์ไฟล์บน HTTPS (เช่น GitHub Pages, Netlify, Vercel)
+2) วางไฟล์: index.html + manifest.json + sw.js ที่ผมให้
+3) เปิดเว็บผ่าน Safari
+4) กด Share → Add to Home Screen
+5) เปิดจากไอคอนที่หน้าจอ แล้วจึงขอสิทธิ์ Notification ได้
+
+* ถ้าใช้ไฟล์ในเครื่อง (file://) จะไม่เด้ง Notification แบบระบบ`
+  );
+});
+
+btnReset.addEventListener("click", ()=>{
+  if(!confirm("ล้างข้อมูลทั้งหมดจริงไหม? (ย้อนกลับไม่ได้)")) return;
+  localStorage.removeItem(LS_KEY);
+  alert("ล้างแล้ว กรุณารีโหลดหน้า");
+  location.reload();
+});
+</script>
+</body>
+</html>
