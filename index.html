@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="th">
+<html lang="th" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
@@ -22,6 +22,48 @@
       --ok:#22c55e;
       --warn:#f59e0b;
     }
+
+    /* =========================
+       THEME: LIGHT/DARK/SYSTEM
+       ใช้ data-theme บน <html>
+    ========================= */
+    html[data-theme="light"]{
+      --bg:#f5f7ff;
+      --card: rgba(255,255,255,.85);
+      --muted:#4b5563;
+      --text:#0b1220;
+      --line:rgba(2,6,23,.10);
+
+      --danger:#dc2626;
+      --ok:#16a34a;
+      --warn:#d97706;
+    }
+    html[data-theme="light"] body{
+      background:
+        radial-gradient(1200px 600px at 40% -20%, rgba(14,167,90,.18), transparent 60%),
+        radial-gradient(1200px 600px at 110% 10%, rgba(37,99,235,.18), transparent 55%),
+        radial-gradient(900px 600px at -10% 100%, rgba(168,85,247,.16), transparent 55%),
+        var(--bg);
+    }
+    html[data-theme="light"] input,
+    html[data-theme="light"] select,
+    html[data-theme="light"] textarea{
+      background: rgba(255,255,255,.8);
+      border:1px solid rgba(2,6,23,.12);
+      color: var(--text);
+    }
+    html[data-theme="light"] .chip,
+    html[data-theme="light"] .pill,
+    html[data-theme="light"] .mini,
+    html[data-theme="light"] .item,
+    html[data-theme="light"] .tab{
+      background: rgba(255,255,255,.65);
+    }
+    html[data-theme="light"] .nav{
+      background: rgba(245,247,255,.88);
+      border-top:1px solid rgba(2,6,23,.10);
+    }
+
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -38,9 +80,7 @@
       display:flex;align-items:center;justify-content:space-between;gap:12px;
       padding:14px 12px 8px;
     }
-    .brand{
-      display:flex;align-items:center;gap:10px;
-    }
+    .brand{display:flex;align-items:center;gap:10px;}
     .logo{
       width:40px;height:40px;border-radius:14px;
       background: linear-gradient(145deg, rgba(14,167,90,.95), rgba(37,99,235,.9));
@@ -56,6 +96,7 @@
       display:flex;gap:8px;align-items:center;
       background: rgba(255,255,255,.03);
       font-size:12px;color:var(--muted);
+      white-space:nowrap;
     }
     .pill{
       display:inline-flex;align-items:center;gap:8px;
@@ -64,8 +105,11 @@
       background: rgba(255,255,255,.03);
       color:var(--text);
       font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
     }
-    .pill b{font-weight:700}
+    .pill b{font-weight:800}
     .grid{display:grid;gap:12px;}
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
@@ -134,6 +178,7 @@
       font-size:12px;font-weight:700;
       border:1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.2);
+      white-space:nowrap;
     }
     .b-ok{border-color: rgba(34,197,94,.5); color:#bff7d1}
     .b-warn{border-color: rgba(245,158,11,.55); color:#ffe2a8}
@@ -223,6 +268,41 @@
       font-size:12px;
       line-height:1.45;
     }
+
+    /* Timeline */
+    .tl-top{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;
+    }
+    .progress{
+      height:10px;border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      overflow:hidden;
+      flex:1;
+      min-width:160px;
+    }
+    .progress > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(14,167,90,1), rgba(37,99,235,1));
+    }
+    .tl-item{
+      position:relative;
+      padding-left:16px;
+    }
+    .tl-item::before{
+      content:"";
+      position:absolute;
+      left:4px; top:16px;
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(255,255,255,.35);
+      border:1px solid var(--line);
+    }
+    .tl-item.done::before{ background: rgba(34,197,94,.9); }
+    .tl-item.today::before{ background: rgba(245,158,11,.95); }
+    .tl-item.overdue::before{ background: rgba(239,68,68,.95); }
+    .tl-item .meta b{font-weight:800}
+
     @media (min-width:760px){
       .grid{grid-template-columns: 1.1fr .9fr;}
     }
@@ -239,7 +319,13 @@
           <div class="sub" id="nowLine">กำลังโหลดเวลา…</div>
         </div>
       </div>
-      <div class="chip" id="cycleChip">รอบปลูก: <b id="activeCycleName">—</b></div>
+
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="chip" id="cycleChip">รอบปลูก: <b id="activeCycleName">—</b></div>
+        <button class="pill" id="btnTheme" type="button" title="สลับธีม">
+          🌓 <b id="themeLabel">ระบบ</b>
+        </button>
+      </div>
     </div>
 
     <!-- PAGE: TODAY -->
@@ -273,6 +359,34 @@
           <div class="hr"></div>
           <h2>📋 รายการ “วันนี้ควรทำอะไร”</h2>
           <div id="todayList" class="note">กำลังคำนวณรายการวันนี้…</div>
+
+          <div class="hr"></div>
+          <h2>🗺️ ไทม์ไลน์จนเก็บเกี่ยว</h2>
+
+          <div class="two">
+            <div>
+              <label>เลือกผัก (ไทม์ไลน์)</label>
+              <select id="timelinePlant"></select>
+              <div class="note">แสดงงานทั้งหมดตั้งแต่เพาะ → ย้าย → ดูแล → เก็บเกี่ยว</div>
+            </div>
+            <div>
+              <label>สรุปความคืบหน้า</label>
+              <div class="mini">
+                <div class="t">ความคืบหน้า</div>
+                <div class="v" id="timelinePct">—</div>
+                <div class="s" id="timelineEta">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-top" style="margin-top:10px">
+            <div class="progress" aria-label="progress">
+              <div id="timelineBar"></div>
+            </div>
+            <span class="badge b-info" id="timelineRange">—</span>
+          </div>
+
+          <div id="timelineList" class="note" style="margin-top:10px">ยังไม่มีไทม์ไลน์</div>
         </div>
 
         <div class="card">
@@ -454,6 +568,7 @@
                 <option value="ย้ายลงถ้วย/ตะกร้า">ย้ายลงถ้วย/ตะกร้า</option>
                 <option value="ย้ายลงทาวเวอร์">ย้ายลงทาวเวอร์</option>
                 <option value="ทำความสะอาดระบบ">ทำความสะอาดระบบ</option>
+                <option value="เก็บเกี่ยว">เก็บเกี่ยว</option>
                 <option value="อื่น ๆ">อื่น ๆ</option>
               </select>
             </div>
@@ -511,6 +626,28 @@
         </div>
 
         <div class="hr"></div>
+        <h2>🌓 ธีมสี</h2>
+        <div class="two">
+          <div>
+            <label>เลือกธีม</label>
+            <select id="themeSelect">
+              <option value="system">ตามระบบ (อัตโนมัติ)</option>
+              <option value="dark">โหมดมืด</option>
+              <option value="light">โหมดสว่าง</option>
+            </select>
+            <div class="note">เปลี่ยนได้จากปุ่ม 🌓 ด้านบนด้วย และระบบจะจำค่าไว้</div>
+          </div>
+          <div>
+            <label>สถานะธีม</label>
+            <div class="mini">
+              <div class="t">กำลังใช้งาน</div>
+              <div class="v" id="themeStatus">—</div>
+              <div class="s" id="themeStatusSub">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
         <h2>🥗 เพิ่ม/แก้รายชื่อผัก</h2>
         <div class="two">
           <div>
@@ -530,8 +667,7 @@
         <h2>🔔 การเตือน</h2>
         <div class="warnbox">
           <b>โหมดไฟล์ (เปิดจากเครื่อง)</b>: เตือนได้เฉพาะ “ในแอป” (ต้องเปิดแอปไว้) และจะสั่น/เสียงเมื่อถึงเวลา<br/>
-          <b>โหมด PWA + HTTPS</b>: สามารถขอสิทธิ์ Notification ได้ (ต้องมี <code>manifest.json</code> + <code>sw.js</code>)<br/>
-          ผมแถมไฟล์สองตัวด้านล่างให้แล้วครับ
+          <b>โหมด PWA + HTTPS</b>: สามารถขอสิทธิ์ Notification ได้ (ต้องมี <code>manifest.json</code> + <code>sw.js</code>)
         </div>
         <div class="two" style="margin-top:10px">
           <button class="btn outline" id="btnTestInAppAlert">ทดสอบเตือนในแอป (สั่น/เสียง)</button>
@@ -548,7 +684,7 @@
         <ol class="note">
           <li>เปิดแอป <b>ไฟล์ (Files)</b></li>
           <li>ไปที่ <b>บน iPhone ของฉัน</b> → สร้างโฟลเดอร์ชื่อ “FarmApp”</li>
-          <li>ในโฟลเดอร์ FarmApp → กด <b>…</b> → <b>เอกสารใหม่ (New Document)</b> (ถ้าไม่มี ให้ใช้ “โน้ต” แล้วแชร์เข้าไฟล์)</li>
+          <li>ในโฟลเดอร์ FarmApp → กด <b>…</b> → <b>เอกสารใหม่ (New Document)</b></li>
           <li>วางโค้ดนี้ทั้งหมด → บันทึกชื่อ <b>index.html</b></li>
           <li>แตะไฟล์ index.html → เลือกเปิดด้วย <b>Safari</b></li>
           <li>ใน Safari กดปุ่มแชร์ → <b>Add to Home Screen</b> เพื่อทำเป็นไอคอนเหมือนแอป</li>
@@ -582,17 +718,13 @@ function getThaiNow() {
   return { now, date, time: hhmmss };
 }
 function toThaiDateTimeLocalInput(isoLikeDate, hhmmss){
-  // returns "YYYY-MM-DDTHH:MM"
   const [hh,mm] = (hhmmss || "00:00:00").split(":");
   return `${isoLikeDate}T${hh}:${mm}`;
 }
 function formatThaiHuman(dateYYYYMMDD, timeHHMMSS){
-  // e.g. 2026-01-25 22:16:34
   return `${dateYYYYMMDD} ${timeHHMMSS}`;
 }
 function parseDateTimeToMs(dateYYYYMMDD, timeHHMMSS){
-  // create a Date in Asia/Bangkok without UTC drift:
-  // trick: build string with explicit +07:00 offset
   const [hh,mm,ss] = (timeHHMMSS || "00:00:00").split(":");
   const s = `${dateYYYYMMDD}T${hh}:${mm}:${ss}+07:00`;
   return new Date(s).getTime();
@@ -633,7 +765,7 @@ const DEFAULT_PLANTS = [
 
 /*
   TIMELINE TEMPLATE (days after sowing)
-  คุณสามารถปรับวันได้ทีหลังในหน้า บันทึก > แก้งาน/เลื่อนงาน
+  เพิ่ม "เตรียมเก็บ" และ "เก็บเกี่ยว" ให้ครบ
 */
 const TASK_TEMPLATE = [
   { day:0,  title:"เพาะเมล็ด", detail:"กดฟองน้ำให้ชุ่มทั้งก้อน / หยอดเมล็ด / ปิดฝา", type:"เพาะเมล็ด" },
@@ -644,7 +776,9 @@ const TASK_TEMPLATE = [
   { day:7,  title:"เริ่มปุ๋ยอ่อน", detail:"เริ่มปุ๋ย AB อ่อนมาก (เช่น 1/4) ถ้ารากเริ่มเดิน", type:"ให้ปุ๋ยอ่อน" },
   { day:10, title:"ย้ายลงถ้วย/ตะกร้า", detail:"ถ้าใบจริง 2 ใบ + รากแข็งแรง", type:"ย้ายลงถ้วย/ตะกร้า" },
   { day:14, title:"ย้ายลงทาวเวอร์", detail:"เมื่อแข็งแรงพอ/รากยาวถึงน้ำ", type:"ย้ายลงทาวเวอร์" },
-  { day:21, title:"ตรวจ EC/น้ำ/ตะไคร่", detail:"ปรับความเข้มปุ๋ย/ป้องกันน้ำร้อน/กันแสงเข้าถัง", type:"ทำความสะอาดระบบ" }
+  { day:21, title:"ตรวจ EC/น้ำ/ตะไคร่", detail:"ปรับความเข้มปุ๋ย/ป้องกันน้ำร้อน/กันแสงเข้าถัง", type:"ทำความสะอาดระบบ" },
+  { day:24, title:"เตรียมเก็บเกี่ยว", detail:"ลดความเครียดพืช/คุมความสะอาด/เตรียมภาชนะ", type:"อื่น ๆ" },
+  { day:28, title:"เก็บเกี่ยว", detail:"ตัดเก็บ/ล้าง/ชั่ง/บันทึกผล แล้วทำความสะอาดระบบ", type:"เก็บเกี่ยว" }
 ];
 
 /* =========================
@@ -657,7 +791,8 @@ if(!db){
     version:1,
     settings: {
       timezone: "Asia/Bangkok",
-      inAppAlert: { enabled:true, vibrate:true, sound:true }
+      inAppAlert: { enabled:true, vibrate:true, sound:true },
+      themeMode: "system" // system | dark | light
     },
     plants: DEFAULT_PLANTS,
     cycles: [
@@ -668,17 +803,23 @@ if(!db){
         note:"เมล็ดแถม งอก 75%",
         germDefault:75,
         targetHoles:48,
-        plantsInCycle: [], // { plantId, desired, germUsed, sow, extra, sowDate }
-        tasks: [], // generated per plant
+        plantsInCycle: [],
+        tasks: [],
         createdAt: formatThaiHuman(thai.date, thai.time)
       }
     ],
     activeCycleId: "c_first",
     logs: {
-      actions: [], // {id, cycleId, plantId, type, date, time, note}
-      health: []   // {id, cycleId, plantId, leafStatus, tempC, date, time, note}
+      actions: [],
+      health: []
     }
   };
+  saveDB();
+}else{
+  // กันเคสอัปเดตจากเวอร์ชันเก่า
+  db.settings = db.settings || {};
+  db.settings.inAppAlert = db.settings.inAppAlert || { enabled:true, vibrate:true, sound:true };
+  if(!db.settings.themeMode) db.settings.themeMode = "system";
   saveDB();
 }
 
@@ -725,6 +866,76 @@ function escapeHtml(str){
 }
 
 /* =========================
+   THEME LOGIC (System/Dark/Light)
+========================= */
+const btnTheme = document.getElementById("btnTheme");
+const themeLabel = document.getElementById("themeLabel");
+const themeSelect = document.getElementById("themeSelect");
+const themeStatus = document.getElementById("themeStatus");
+const themeStatusSub = document.getElementById("themeStatusSub");
+
+const mqlDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+
+function getResolvedTheme(mode){
+  if(mode === "dark") return "dark";
+  if(mode === "light") return "light";
+  // system
+  const isDark = mqlDark ? mqlDark.matches : true;
+  return isDark ? "dark" : "light";
+}
+function applyTheme(mode){
+  const resolved = getResolvedTheme(mode);
+  document.documentElement.setAttribute("data-theme", resolved);
+
+  // label
+  const label = mode==="system" ? "ระบบ" : (mode==="dark" ? "มืด" : "สว่าง");
+  if(themeLabel) themeLabel.textContent = label;
+
+  // settings ui
+  if(themeSelect) themeSelect.value = mode;
+  if(themeStatus) themeStatus.textContent = (resolved==="dark" ? "โหมดมืด" : "โหมดสว่าง");
+  if(themeStatusSub) themeStatusSub.textContent =
+    mode==="system" ? "อิงตามการตั้งค่าระบบของเครื่อง" : "ล็อกตามที่คุณเลือก";
+
+  // theme-color
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta){
+    meta.setAttribute("content", resolved==="dark" ? "#0ea75a" : "#2563eb");
+  }
+}
+function setThemeMode(mode){
+  db.settings.themeMode = mode;
+  saveDB();
+  applyTheme(mode);
+}
+
+function cycleThemeMode(){
+  const cur = db.settings.themeMode || "system";
+  const next = cur==="system" ? "dark" : cur==="dark" ? "light" : "system";
+  setThemeMode(next);
+}
+
+if(btnTheme){
+  btnTheme.addEventListener("click", cycleThemeMode);
+}
+if(themeSelect){
+  themeSelect.addEventListener("change", ()=> setThemeMode(themeSelect.value));
+}
+if(mqlDark){
+  const handler = ()=>{
+    if((db.settings.themeMode || "system")==="system"){
+      applyTheme("system");
+      renderAll();
+    }
+  };
+  if(mqlDark.addEventListener) mqlDark.addEventListener("change", handler);
+  else if(mqlDark.addListener) mqlDark.addListener(handler);
+}
+
+// apply at start
+applyTheme(db.settings.themeMode || "system");
+
+/* =========================
    UI: NAV
 ========================= */
 const pages = {
@@ -749,7 +960,6 @@ document.querySelectorAll(".tab").forEach(t=>{
 ========================= */
 const nowLine = document.getElementById("nowLine");
 const activeCycleName = document.getElementById("activeCycleName");
-const cycleChip = document.getElementById("cycleChip");
 
 const nextTaskTitle = document.getElementById("nextTaskTitle");
 const nextTaskMeta = document.getElementById("nextTaskMeta");
@@ -813,13 +1023,19 @@ const btnTestInAppAlert = document.getElementById("btnTestInAppAlert");
 const btnHowToPWA = document.getElementById("btnHowToPWA");
 const btnReset = document.getElementById("btnReset");
 
+/* timeline elements */
+const timelinePlant = document.getElementById("timelinePlant");
+const timelineList = document.getElementById("timelineList");
+const timelinePct = document.getElementById("timelinePct");
+const timelineEta = document.getElementById("timelineEta");
+const timelineBar = document.getElementById("timelineBar");
+const timelineRange = document.getElementById("timelineRange");
+
 function setDefaultDatesTimes(){
   const thai = getThaiNow();
-  // default to today Thai
   if(newCycleStart) newCycleStart.value = thai.date;
   if(healthDate) healthDate.value = thai.date;
   if(actDate) actDate.value = thai.date;
-  // default time to now
   const t = thai.time;
   if(healthTime) healthTime.value = t.slice(0,8);
   if(actTime) actTime.value = t.slice(0,8);
@@ -863,9 +1079,7 @@ function renderCycleSelect(){
 }
 
 function renderPlantOptions(){
-  const opts = db.plants
-    .slice()
-    .sort((a,b)=>a.name.localeCompare(b.name,"th"));
+  const opts = db.plants.slice().sort((a,b)=>a.name.localeCompare(b.name,"th"));
 
   function fill(selectEl){
     selectEl.innerHTML = "";
@@ -880,7 +1094,6 @@ function renderPlantOptions(){
   fill(healthPlant);
   fill(actPlant);
 
-  // default select to salad mix if exists
   const mix = db.plants.find(p=>p.name==="สลัดมิกซ์") || db.plants.find(p=>p.id==="p_mix");
   if(mix){
     plantSelect.value = mix.id;
@@ -903,8 +1116,6 @@ desiredHoles.addEventListener("input", renderCalc);
 plantGerm.addEventListener("input", renderCalc);
 plantSelect.addEventListener("change", ()=>{
   const c = getActiveCycle();
-  const plant = getPlantById(plantSelect.value);
-  // auto fill desired from target holes
   desiredHoles.value = String(c.targetHoles || 48);
   plantGerm.value = "";
   renderCalc();
@@ -951,7 +1162,6 @@ function renderTasks(){
     return;
   }
 
-  // fill edit select
   taskEditSelect.innerHTML = "";
   all.forEach(t=>{
     const p = getPlantById(t.plantId);
@@ -961,7 +1171,6 @@ function renderTasks(){
     taskEditSelect.appendChild(o);
   });
 
-  // render cards
   tasksList.innerHTML = all.map(t=>{
     const p = getPlantById(t.plantId);
     const status = t.done ? `<span class="badge b-ok">เสร็จแล้ว</span>` : `<span class="badge b-warn">รอทำ</span>`;
@@ -1035,7 +1244,6 @@ function renderHistory(){
 function renderPlantManage(){
   const list = db.plants.slice().sort((a,b)=>a.name.localeCompare(b.name,"th"));
   plantManageList.innerHTML = list.map(p=>{
-    const lock = (p.id.startsWith("p_")) ? "" : "";
     return `
       <div class="item">
         <div class="top">
@@ -1058,7 +1266,6 @@ function renderToday(){
   const thai = getThaiNow();
   const nowMs = parseDateTimeToMs(thai.date, thai.time);
 
-  // find next not-done task
   const pending = (c.tasks || []).filter(t=>!t.done).sort((a,b)=>a.dueMs-b.dueMs);
   const next = pending[0];
 
@@ -1084,7 +1291,6 @@ function renderToday(){
   countdown.textContent = msToHuman(diff);
   countdownHint.textContent = diff>0 ? "จนถึงกำหนด" : "เลยกำหนดแล้ว (ควรทำวันนี้)";
 
-  // list tasks due today or overdue
   const startOfToday = parseDateTimeToMs(thai.date, "00:00:00");
   const endOfToday = parseDateTimeToMs(thai.date, "23:59:59");
   const dueToday = (c.tasks || []).filter(t=>!t.done && t.dueMs>=startOfToday && t.dueMs<=endOfToday);
@@ -1122,6 +1328,127 @@ function renderTaskEditDate(){
 }
 taskEditSelect.addEventListener("change", renderTaskEditDate);
 
+/* =========================
+   TIMELINE RENDER (จนเก็บเกี่ยว)
+========================= */
+function ensureTimelineSelect(){
+  const c = getActiveCycle();
+  const plantIdsInCycle = (c.plantsInCycle || []).map(x=>x.plantId);
+  const unique = [...new Set(plantIdsInCycle)];
+
+  timelinePlant.innerHTML = "";
+  if(!unique.length){
+    const o = document.createElement("option");
+    o.value = "";
+    o.textContent = "— ยังไม่มีผักในรอบนี้ —";
+    timelinePlant.appendChild(o);
+    timelinePlant.disabled = true;
+    return;
+  }
+  timelinePlant.disabled = false;
+
+  unique.forEach(pid=>{
+    const p = getPlantById(pid);
+    const o = document.createElement("option");
+    o.value = pid;
+    o.textContent = p?.name || "—";
+    timelinePlant.appendChild(o);
+  });
+
+  // ถ้าเลือกเดิมยังอยู่ให้คงไว้ ไม่งั้นเลือกตัวแรก
+  const cur = timelinePlant.dataset.selected || "";
+  if(cur && unique.includes(cur)) timelinePlant.value = cur;
+  else timelinePlant.value = unique[0];
+
+  timelinePlant.dataset.selected = timelinePlant.value;
+}
+timelinePlant.addEventListener("change", ()=>{
+  timelinePlant.dataset.selected = timelinePlant.value;
+  renderTimeline();
+});
+
+function renderTimeline(){
+  const c = getActiveCycle();
+  ensureTimelineSelect();
+
+  const pid = timelinePlant.value;
+  if(!pid){
+    timelinePct.textContent = "—";
+    timelineEta.textContent = "เพิ่มผักในรอบปลูกก่อน";
+    timelineBar.style.width = "0%";
+    timelineRange.textContent = "—";
+    timelineList.innerHTML = `<div class="note">ยังไม่มีไทม์ไลน์</div>`;
+    return;
+  }
+
+  const thai = getThaiNow();
+  const nowMs = parseDateTimeToMs(thai.date, thai.time);
+  const startOfToday = parseDateTimeToMs(thai.date, "00:00:00");
+  const endOfToday = parseDateTimeToMs(thai.date, "23:59:59");
+
+  const tasks = (c.tasks || []).filter(t=>t.plantId===pid).slice().sort((a,b)=>a.dueMs-b.dueMs);
+  if(!tasks.length){
+    timelinePct.textContent = "—";
+    timelineEta.textContent = "ยังไม่มีงานของผักนี้";
+    timelineBar.style.width = "0%";
+    timelineRange.textContent = "—";
+    timelineList.innerHTML = `<div class="note">ยังไม่มีไทม์ไลน์</div>`;
+    return;
+  }
+
+  const total = tasks.length;
+  const doneCount = tasks.filter(t=>t.done).length;
+  const pct = Math.round((doneCount/total)*100);
+  timelinePct.textContent = `${pct}% (${doneCount}/${total})`;
+  timelineBar.style.width = `${pct}%`;
+
+  const first = tasks[0];
+  const last = tasks[tasks.length-1];
+  timelineRange.textContent = `${first.dueDate} → ${last.dueDate}`;
+
+  const lastMs = last.dueMs;
+  const left = lastMs - nowMs;
+  timelineEta.textContent = left>0 ? `ถึงวันเก็บเกี่ยวอีก ${msToHuman(left)}` : `เลยวันเก็บเกี่ยวแล้ว (ตรวจงาน/บันทึกเก็บเกี่ยว)`;
+
+  const p = getPlantById(pid);
+
+  timelineList.innerHTML = `
+    <div class="note">ผัก: <b>${escapeHtml(p?.name || "—")}</b> • แสดงงานทั้งหมดเรียงตามเวลา</div>
+    <ul class="list">
+      ${tasks.map(t=>{
+        const isDone = !!t.done;
+        const isToday = (!isDone && t.dueMs>=startOfToday && t.dueMs<=endOfToday);
+        const isOver = (!isDone && t.dueMs<startOfToday);
+
+        const cls = "item tl-item " + (isDone ? "done" : (isToday ? "today" : (isOver ? "overdue" : "")));
+        const badge = isDone
+          ? `<span class="badge b-ok">เสร็จแล้ว</span>`
+          : (isOver ? `<span class="badge b-danger">เลยกำหนด</span>` : (isToday ? `<span class="badge b-warn">วันนี้</span>` : `<span class="badge b-info">ถัดไป</span>`));
+
+        return `
+          <li class="${cls}">
+            <div class="top">
+              <div>
+                <div class="title">${escapeHtml(t.title)}</div>
+                <div class="meta">
+                  กำหนด: <b>${escapeHtml(t.dueDate)} ${escapeHtml(t.dueTime)}</b><br/>
+                  ${escapeHtml(t.detail || "")}
+                </div>
+              </div>
+              ${badge}
+            </div>
+            <div class="actions">
+              ${isDone ? "" : `<button class="smallbtn ok" onclick="markTaskDone('${t.id}')">ทำเสร็จแล้ว</button>`}
+              <button class="smallbtn" onclick="quickShiftTask('${t.id}', 1)">เลื่อน +1 วัน</button>
+              <button class="smallbtn" onclick="quickShiftTask('${t.id}', -1)">เลื่อน -1 วัน</button>
+            </div>
+          </li>
+        `;
+      }).join("")}
+    </ul>
+  `;
+}
+
 function renderAll(){
   renderHeader();
   renderCycleSelect();
@@ -1131,8 +1458,10 @@ function renderAll(){
   renderTasks();
   renderTaskEditDate();
   renderToday();
+  renderTimeline();
   renderHistory();
   renderPlantManage();
+  applyTheme(db.settings.themeMode || "system");
 }
 renderAll();
 
@@ -1182,10 +1511,8 @@ btnAddPlantToCycle.addEventListener("click", ()=>{
   const germUsed = plantGerm.value ? Number(plantGerm.value) : (plant.defaultGerm || c.germDefault || 75);
   const r = calcSow(desired, germUsed);
 
-  // sow date = cycle start by default
   const sowDate = c.startDate;
 
-  // prevent duplicates (same plant)
   const already = c.plantsInCycle.find(x=>x.plantId===pid);
   if(already){
     if(!confirm("ผักนี้มีอยู่ในรอบแล้ว ต้องการเพิ่มซ้ำอีกครั้งไหม?")) return;
@@ -1202,7 +1529,6 @@ btnAddPlantToCycle.addEventListener("click", ()=>{
   };
   c.plantsInCycle.push(pi);
 
-  // generate tasks for this plant
   generateTasksForPlant(c, pi);
 
   saveDB();
@@ -1237,7 +1563,7 @@ function generateTasksForPlant(cycle, plantInCycle){
   const sowDate = plantInCycle.sowDate || cycle.startDate;
   TASK_TEMPLATE.forEach(tpl=>{
     const dueDate = daysAfter(sowDate, tpl.day);
-    const dueTime = tpl.day===0 ? "08:00:00" : "08:30:00"; // ตั้งเวลาเริ่มต้น
+    const dueTime = tpl.day===0 ? "08:00:00" : "08:30:00";
     const dueMs = parseDateTimeToMs(dueDate, dueTime);
     cycle.tasks.push({
       id: uid("task"),
@@ -1257,7 +1583,6 @@ function markTaskDone(taskId){
   if(!t) return;
   t.done = true;
 
-  // auto log action when mark done
   const thai = getThaiNow();
   db.logs.actions.push({
     id: uid("act"),
@@ -1277,7 +1602,7 @@ function quickShiftTask(taskId, deltaDays){
   const c = getActiveCycle();
   const t = (c.tasks||[]).find(x=>x.id===taskId);
   if(!t) return;
-  // shift by deltaDays
+
   const baseMs = parseDateTimeToMs(t.dueDate, t.dueTime);
   const newMs = baseMs + deltaDays*24*60*60*1000;
   const dt = new Date(newMs);
@@ -1303,7 +1628,6 @@ btnMarkDone.addEventListener("click", ()=>{
   markTaskDone(next.id);
 });
 
-// In-app alert when due (works while app is open)
 let lastAlertTaskId = null;
 function inAppAlert(title, detail){
   try{
@@ -1325,7 +1649,7 @@ function inAppAlert(title, detail){
 }
 
 function tick(){
-  renderHeader(); // update time line
+  renderHeader();
   const c = getActiveCycle();
   const thai = getThaiNow();
   const nowMs = parseDateTimeToMs(thai.date, thai.time);
@@ -1333,7 +1657,6 @@ function tick(){
   const next = (c.tasks||[]).filter(t=>!t.done).sort((a,b)=>a.dueMs-b.dueMs)[0];
   if(next){
     const diff = next.dueMs - nowMs;
-    // alert when crossing due time (once)
     if(db.settings.inAppAlert.enabled && diff<=0 && lastAlertTaskId !== next.id){
       lastAlertTaskId = next.id;
       const p = getPlantById(next.plantId);
@@ -1341,6 +1664,7 @@ function tick(){
     }
   }
   renderToday();
+  renderTimeline();
 }
 setInterval(tick, 1000);
 
@@ -1394,11 +1718,9 @@ btnSaveAct.addEventListener("click", ()=>{
   };
   db.logs.actions.push(rec);
 
-  // special: if action is "เพาะเมล็ด" and plant exists in cycle, offer regen schedule
   if(actType.value==="เพาะเมล็ด"){
     const pi = c.plantsInCycle.find(x=>x.plantId===pid);
     if(pi){
-      // update sowDate to selected date, regen tasks optional
       if(confirm("ต้องการให้ “วันเพาะ” ของผักนี้ = วันที่ที่คุณบันทึก และสร้างงานใหม่ตามวันเพาะไหม?")){
         pi.sowDate = date;
         c.tasks = (c.tasks||[]).filter(t=>t.plantId!==pid);
@@ -1418,8 +1740,7 @@ btnTaskSave.addEventListener("click", ()=>{
   const t = (c.tasks||[]).find(x=>x.id===tid);
   if(!t) return;
 
-  // taskEditDate is datetime-local (no tz) but represents user local -> treat as Bangkok
-  const val = taskEditDate.value; // "YYYY-MM-DDTHH:MM"
+  const val = taskEditDate.value;
   if(!val) return alert("กรุณาเลือกวัน/เวลาใหม่");
   const [d, hm] = val.split("T");
   const dueDate = d;
@@ -1445,7 +1766,6 @@ btnTaskDone.addEventListener("click", ()=>{
 btnAddPlant.addEventListener("click", ()=>{
   const name = (newPlantName.value||"").trim();
   if(!name) return alert("กรุณากรอกชื่อผัก");
-  // prevent dup
   if(db.plants.some(p=>p.name.toLowerCase()===name.toLowerCase())){
     return alert("ชื่อนี้มีอยู่แล้ว");
   }
@@ -1463,7 +1783,6 @@ btnAddPlant.addEventListener("click", ()=>{
 
 function deletePlant(pid){
   if(!confirm("ลบชื่อผักนี้ออกจากรายการ? (ประวัติเดิมจะยังอยู่แต่แสดงชื่อไม่ได้)")) return;
-  // do not delete defaults with p_
   if(pid.startsWith("p_")) return alert("รายการนี้เป็นค่าเริ่มต้น ลบไม่ได้");
   db.plants = db.plants.filter(p=>p.id!==pid);
   saveDB();
@@ -1493,7 +1812,14 @@ fileImport.addEventListener("change", async (e)=>{
     const obj = JSON.parse(text);
     if(!obj || !obj.cycles) throw new Error("format");
     db = obj;
+
+    // กันตก settings ใหม่
+    db.settings = db.settings || {};
+    db.settings.inAppAlert = db.settings.inAppAlert || { enabled:true, vibrate:true, sound:true };
+    if(!db.settings.themeMode) db.settings.themeMode = "system";
+
     saveDB();
+    applyTheme(db.settings.themeMode || "system");
     alert("นำเข้าข้อมูลสำเร็จ");
     renderAll();
   }catch(err){
@@ -1514,7 +1840,7 @@ btnHowToPWA.addEventListener("click", ()=>{
   alert(
 `เปิด Notification จริงบน iPhone (แนวทางย่อ):
 1) ต้องโฮสต์ไฟล์บน HTTPS (เช่น GitHub Pages, Netlify, Vercel)
-2) วางไฟล์: index.html + manifest.json + sw.js ที่ผมให้
+2) วางไฟล์: index.html + manifest.json + sw.js
 3) เปิดเว็บผ่าน Safari
 4) กด Share → Add to Home Screen
 5) เปิดจากไอคอนที่หน้าจอ แล้วจึงขอสิทธิ์ Notification ได้
