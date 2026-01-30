@@ -5,405 +5,359 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>ผู้ช่วยวางแผนฟาร์มผัก</title>
   <meta name="theme-color" content="#0ea75a"/>
-<style>
-  :root{
-    --bg:#0b1220;
-    --card:#0f1a30;
-    --muted:#9fb0d0;
-    --text:#eaf0ff;
-    --line:rgba(255,255,255,.08);
 
-    --g1:#0ea75a; /* วันนี้ */
-    --g2:#2563eb; /* รอบปลูก */
-    --g3:#f59e0b; /* บันทึก */
-    --g4:#a855f7; /* ตั้งค่า */
+  <style>
+    :root{
+      /* DARK */
+      --bg:#0b1220;
+      --card:#0f1a30;
+      --muted:#9fb0d0;
+      --text:#eaf0ff;
+      --line:rgba(255,255,255,.08);
 
-    --danger:#ef4444;
-    --ok:#22c55e;
-    --warn:#f59e0b;
+      --g1:#0ea75a; /* วันนี้ */
+      --g2:#2563eb; /* รอบปลูก */
+      --g3:#f59e0b; /* บันทึก */
+      --g4:#a855f7; /* ตั้งค่า */
 
-    /* เพิ่มโทนสำหรับ “ข้อความบนกล่อง” (โหมดมืด) */
-    --on-warn:#ffe9bf;
-    --on-ok:#c9f7d8;
-    --on-danger:#ffd0d0;
-    --on-info:#cfe3ff;
+      --danger:#ef4444;
+      --ok:#22c55e;
+      --warn:#f59e0b;
 
-    /* เพิ่มพื้นหลังกล่องแบบอ่อน (โหมดมืด) */
-    --bg-warn: rgba(245,158,11,.08);
-    --bg-ok: rgba(34,197,94,.08);
-    --bg-danger: rgba(239,68,68,.08);
-    --bg-info: rgba(37,99,235,.08);
-  }
+      --surface: rgba(255,255,255,.03);
+      --surface2: rgba(255,255,255,.04);
+      --shadow: 0 16px 38px rgba(0,0,0,.22);
+      --btn-outline-border: rgba(255,255,255,.16);
+      --field-bg: rgba(0,0,0,.18);
+      --field-border: rgba(255,255,255,.12);
+      --badge-bg: rgba(0,0,0,.2);
+      --placeholder: rgba(234,240,255,.35);
+    }
 
-  /* =========================
-     THEME: LIGHT/DARK/SYSTEM
-     ใช้ data-theme บน <html>
-  ========================= */
-  html[data-theme="light"]{
-    --bg:#f5f7ff;
-    --card: rgba(255,255,255,.92);
-    --muted:#475569;           /* เข้มขึ้น อ่านง่าย */
-    --text:#0b1220;
-    --line:rgba(2,6,23,.10);
+    /* =========================
+       THEME: LIGHT/DARK/SYSTEM
+       ใช้ data-theme บน <html>
+    ========================= */
+    html[data-theme="light"]{
+      --bg:#f6f8ff;
+      --card: rgba(255,255,255,.92);
+      --muted:#475569;
+      --text:#0b1220;
+      --line:rgba(2,6,23,.10);
 
-    --danger:#dc2626;
-    --ok:#16a34a;
-    --warn:#d97706;
+      --danger:#dc2626;
+      --ok:#16a34a;
+      --warn:#d97706;
 
-    /* สีตัวอักษร “บนกล่อง” ในโหมดสว่าง (ต้องเข้ม) */
-    --on-warn:#5a3b00;
-    --on-ok:#053b1d;
-    --on-danger:#5b0a0a;
-    --on-info:#0b2a66;
+      --surface: rgba(255,255,255,.75);
+      --surface2: rgba(255,255,255,.88);
+      --shadow: 0 18px 40px rgba(2,6,23,.10);
+      --btn-outline-border: rgba(2,6,23,.18);
+      --field-bg: rgba(255,255,255,.92);
+      --field-border: rgba(2,6,23,.14);
+      --badge-bg: rgba(255,255,255,.85);
+      --placeholder: rgba(15,23,42,.35);
+    }
+    html[data-theme="light"] body{
+      background:
+        radial-gradient(1200px 600px at 40% -20%, rgba(14,167,90,.16), transparent 60%),
+        radial-gradient(1200px 600px at 110% 10%, rgba(37,99,235,.14), transparent 55%),
+        radial-gradient(900px 600px at -10% 100%, rgba(168,85,247,.12), transparent 55%),
+        var(--bg);
+    }
 
-    /* พื้นหลังกล่องในโหมดสว่าง */
-    --bg-warn: rgba(217,119,6,.14);
-    --bg-ok: rgba(22,163,74,.12);
-    --bg-danger: rgba(220,38,38,.12);
-    --bg-info: rgba(37,99,235,.12);
-  }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", Arial;
+      background: radial-gradient(1200px 600px at 40% -20%, rgba(14,167,90,.25), transparent 60%),
+                  radial-gradient(1200px 600px at 110% 10%, rgba(37,99,235,.25), transparent 55%),
+                  radial-gradient(900px 600px at -10% 100%, rgba(168,85,247,.22), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      padding-bottom:92px;
+    }
 
-  html[data-theme="light"] body{
-    background:
-      radial-gradient(1200px 600px at 40% -20%, rgba(14,167,90,.18), transparent 60%),
-      radial-gradient(1200px 600px at 110% 10%, rgba(37,99,235,.18), transparent 55%),
-      radial-gradient(900px 600px at -10% 100%, rgba(168,85,247,.16), transparent 55%),
-      var(--bg);
-  }
+    .wrap{max-width:920px;margin:0 auto;padding:16px 14px;}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 12px 8px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;}
+    .logo{
+      width:40px;height:40px;border-radius:14px;
+      background: linear-gradient(145deg, rgba(14,167,90,.95), rgba(37,99,235,.9));
+      display:grid;place-items:center;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      font-size:20px;
+    }
+    h1{font-size:20px;margin:0}
+    .sub{color:var(--muted);font-size:12px;margin-top:2px}
 
-  html[data-theme="light"] input,
-  html[data-theme="light"] select,
-  html[data-theme="light"] textarea{
-    background: rgba(255,255,255,.86);
-    border:1px solid rgba(2,6,23,.12);
-    color: var(--text);
-  }
+    .chip{
+      border:1px solid var(--line);
+      padding:8px 10px;border-radius:999px;
+      display:flex;gap:8px;align-items:center;
+      background: var(--surface);
+      font-size:12px;color:var(--muted);
+      white-space:nowrap;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);
+      padding:7px 10px;border-radius:999px;
+      background: var(--surface);
+      color:var(--text);
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .pill b{font-weight:800}
 
-  html[data-theme="light"] .chip,
-  html[data-theme="light"] .pill,
-  html[data-theme="light"] .mini,
-  html[data-theme="light"] .item,
-  html[data-theme="light"] .tab{
-    background: rgba(255,255,255,.75);
-  }
+    .grid{display:grid;gap:12px;}
+    .card{
+      background: linear-gradient(180deg, var(--surface2), var(--surface));
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      box-shadow: var(--shadow);
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:16px;
+      display:flex;gap:8px;align-items:center;
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row > *{flex:1}
+    label{font-size:12px;color:var(--muted);display:block;margin:8px 0 6px}
 
-  html[data-theme="light"] .nav{
-    background: rgba(245,247,255,.92);
-    border-top:1px solid rgba(2,6,23,.10);
-  }
+    input,select,textarea{
+      width:100%;
+      background: var(--field-bg);
+      border:1px solid var(--field-border);
+      color:var(--text);
+      border-radius:12px;
+      padding:12px 12px;
+      font-size:14px;
+      outline:none;
+    }
+    textarea{min-height:72px;resize:vertical}
+    input::placeholder, textarea::placeholder{color:var(--placeholder)}
 
-  /* ✅ ปรับ “ข้อความ” ให้เหมาะกับโหมดสว่าง */
-  html[data-theme="light"] .sub,
-  html[data-theme="light"] .note,
-  html[data-theme="light"] label{
-    color: var(--muted);
-  }
+    .btn{
+      border:none;border-radius:14px;
+      padding:12px 14px;
+      font-weight:700;
+      color:white;
+      width:100%;
+      cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      transition:.15s transform;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.g1{background:linear-gradient(180deg, rgba(14,167,90,1), rgba(12,138,76,1))}
+    .btn.g2{background:linear-gradient(180deg, rgba(37,99,235,1), rgba(29,78,216,1))}
+    .btn.g3{background:linear-gradient(180deg, rgba(245,158,11,1), rgba(217,119,6,1))}
+    .btn.g4{background:linear-gradient(180deg, rgba(168,85,247,1), rgba(126,34,206,1))}
+    .btn.outline{
+      background:transparent;
+      border:1px solid var(--btn-outline-border);
+      color:var(--text);
+      font-weight:650;
+    }
 
-  html[data-theme="light"] .chip{
-    color: var(--muted);
-    border-color: rgba(2,6,23,.12);
-  }
+    .kpi{
+      display:grid;gap:10px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .mini{
+      border:1px solid var(--line);
+      background: var(--surface);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    .mini .t{color:var(--muted);font-size:12px}
+    .mini .v{font-size:16px;font-weight:800;margin-top:4px}
+    .mini .s{font-size:12px;color:var(--muted);margin-top:4px}
 
-  html[data-theme="light"] .tab{
-    color: rgba(2,6,23,.72);
-    border-color: rgba(2,6,23,.12);
-  }
-  html[data-theme="light"] .tab.active{ color:#0b1220; }
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      border-radius:999px;padding:6px 10px;
+      font-size:12px;font-weight:800;
+      border:1px solid var(--line);
+      background: var(--badge-bg);
+      white-space:nowrap;
+      color: var(--text);
+    }
+    /* ปรับสี badge ให้เหมาะทั้ง Light/Dark */
+    .b-ok{border-color: rgba(34,197,94,.55); color: rgba(22,163,74,1)}
+    html[data-theme="dark"] .b-ok{color:#bff7d1}
+    .b-warn{border-color: rgba(245,158,11,.60); color: rgba(180,83,9,1)}
+    html[data-theme="dark"] .b-warn{color:#ffe2a8}
+    .b-danger{border-color: rgba(239,68,68,.60); color: rgba(185,28,28,1)}
+    html[data-theme="dark"] .b-danger{color:#ffb4b4}
+    .b-info{border-color: rgba(37,99,235,.60); color: rgba(29,78,216,1)}
+    html[data-theme="dark"] .b-info{color:#cfe3ff}
 
-  /* ✅ กล่องเตือน/กล่องสำเร็จ ในโหมดสว่างให้อ่านชัด */
-  html[data-theme="light"] .warnbox{
-    border:1px dashed rgba(217,119,6,.55);
-    background: var(--bg-warn);
-    color: var(--on-warn);
-  }
-  html[data-theme="light"] .okbox{
-    border:1px dashed rgba(22,163,74,.55);
-    background: var(--bg-ok);
-    color: var(--on-ok);
-  }
+    .list{margin:0;padding:0;list-style:none}
+    .item{
+      border:1px solid var(--line);
+      background: var(--surface);
+      border-radius:14px;
+      padding:10px 12px;
+      margin-top:10px;
+    }
+    .item .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .item .title{font-weight:800}
+    .item .meta{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.35}
+    .item .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .smallbtn{
+      padding:8px 10px;border-radius:12px;
+      border:1px solid var(--btn-outline-border);
+      background: transparent;
+      color:var(--text);
+      font-weight:700;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .smallbtn.ok{border-color: rgba(34,197,94,.55)}
+    .smallbtn.danger{border-color: rgba(239,68,68,.60)}
+    .smallbtn.warn{border-color: rgba(245,158,11,.60)}
 
-  /* ✅ แบดจ์ ในโหมดสว่างให้อ่านชัด */
-  html[data-theme="light"] .badge{
-    background: rgba(255,255,255,.86);
-    border-color: rgba(2,6,23,.12);
-    color: #0b1220;
-  }
-  html[data-theme="light"] .b-ok{
-    background: rgba(22,163,74,.10);
-    border-color: rgba(22,163,74,.40);
-    color: var(--on-ok);
-  }
-  html[data-theme="light"] .b-warn{
-    background: rgba(217,119,6,.12);
-    border-color: rgba(217,119,6,.40);
-    color: var(--on-warn);
-  }
-  html[data-theme="light"] .b-danger{
-    background: rgba(220,38,38,.10);
-    border-color: rgba(220,38,38,.40);
-    color: var(--on-danger);
-  }
-  html[data-theme="light"] .b-info{
-    background: rgba(37,99,235,.10);
-    border-color: rgba(37,99,235,.35);
-    color: var(--on-info);
-  }
+    /* bottom nav */
+    .nav{
+      position:fixed;left:0;right:0;bottom:0;
+      padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(10,16,30,.84);
+      backdrop-filter: blur(12px);
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    html[data-theme="light"] .nav{
+      background: rgba(246,248,255,.92);
+      border-top:1px solid rgba(2,6,23,.10);
+    }
 
-  /* ✅ ปุ่ม/ปุ่มย่อย ในโหมดสว่างให้คมขึ้น */
-  html[data-theme="light"] .btn.outline{
-    border-color: rgba(2,6,23,.18);
-  }
-  html[data-theme="light"] .smallbtn{
-    background: rgba(255,255,255,.75);
-    border-color: rgba(2,6,23,.14);
-  }
+    .tabs{display:grid;grid-template-columns: repeat(4,1fr);gap:10px;max-width:920px;margin:0 auto;}
+    .tab{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 8px;
+      text-align:center;
+      font-weight:900;
+      font-size:12px;
+      color: rgba(15,23,42,.72);
+      background: var(--surface);
+      cursor:pointer;
+      user-select:none;
+    }
+    html[data-theme="dark"] .tab{color:rgba(234,240,255,.75)}
+    .tab .dot{
+      width:8px;height:8px;border-radius:99px;margin:0 auto 6px;
+      opacity:.9;
+    }
+    .tab.active{color:var(--text)}
+    .tab.active.g1{background: rgba(14,167,90,.16); border-color: rgba(14,167,90,.45)}
+    .tab.active.g2{background: rgba(37,99,235,.16); border-color: rgba(37,99,235,.45)}
+    .tab.active.g3{background: rgba(245,158,11,.16); border-color: rgba(245,158,11,.45)}
+    .tab.active.g4{background: rgba(168,85,247,.16); border-color: rgba(168,85,247,.45)}
 
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", Arial;
-    background:
-      radial-gradient(1200px 600px at 40% -20%, rgba(14,167,90,.25), transparent 60%),
-      radial-gradient(1200px 600px at 110% 10%, rgba(37,99,235,.25), transparent 55%),
-      radial-gradient(900px 600px at -10% 100%, rgba(168,85,247,.22), transparent 55%),
-      var(--bg);
-    color:var(--text);
-    padding-bottom:92px;
-  }
+    .dot.g1{background:var(--g1)}
+    .dot.g2{background:var(--g2)}
+    .dot.g3{background:var(--g3)}
+    .dot.g4{background:var(--g4)}
 
-  .wrap{max-width:920px;margin:0 auto;padding:16px 14px;}
-  .topbar{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    padding:14px 12px 8px;
-  }
-  .brand{display:flex;align-items:center;gap:10px;}
-  .logo{
-    width:40px;height:40px;border-radius:14px;
-    background: linear-gradient(145deg, rgba(14,167,90,.95), rgba(37,99,235,.9));
-    display:grid;place-items:center;
-    box-shadow: 0 10px 30px rgba(0,0,0,.35);
-    font-size:20px;
-  }
-  h1{font-size:20px;margin:0}
-  .sub{color:var(--muted);font-size:12px;margin-top:2px}
-  .chip{
-    border:1px solid var(--line);
-    padding:8px 10px;border-radius:999px;
-    display:flex;gap:8px;align-items:center;
-    background: rgba(255,255,255,.03);
-    font-size:12px;color:var(--muted);
-    white-space:nowrap;
-  }
-  .pill{
-    display:inline-flex;align-items:center;gap:8px;
-    border:1px solid var(--line);
-    padding:7px 10px;border-radius:999px;
-    background: rgba(255,255,255,.03);
-    color:var(--text);
-    font-size:12px;
-    cursor:pointer;
-    user-select:none;
-    white-space:nowrap;
-  }
-  .pill b{font-weight:800}
-  .grid{display:grid;gap:12px;}
-  .card{
-    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:14px;
-    box-shadow: 0 16px 38px rgba(0,0,0,.22);
-  }
-  .card h2{
-    margin:0 0 10px;
-    font-size:16px;
-    display:flex;gap:8px;align-items:center;
-  }
-  .row{display:flex;gap:10px;flex-wrap:wrap}
-  .row > *{flex:1}
-  label{font-size:12px;color:var(--muted);display:block;margin:8px 0 6px}
-  input,select,textarea{
-    width:100%;
-    background: rgba(0,0,0,.18);
-    border:1px solid rgba(255,255,255,.12);
-    color:var(--text);
-    border-radius:12px;
-    padding:12px 12px;
-    font-size:14px;
-    outline:none;
-  }
-  textarea{min-height:72px;resize:vertical}
-  input::placeholder, textarea::placeholder{color:rgba(234,240,255,.35)}
-  .btn{
-    border:none;border-radius:14px;
-    padding:12px 14px;
-    font-weight:700;
-    color:white;
-    width:100%;
-    cursor:pointer;
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    transition:.15s transform;
-  }
-  .btn:active{transform:scale(.98)}
-  .btn.g1{background:linear-gradient(180deg, rgba(14,167,90,1), rgba(12,138,76,1))}
-  .btn.g2{background:linear-gradient(180deg, rgba(37,99,235,1), rgba(29,78,216,1))}
-  .btn.g3{background:linear-gradient(180deg, rgba(245,158,11,1), rgba(217,119,6,1))}
-  .btn.g4{background:linear-gradient(180deg, rgba(168,85,247,1), rgba(126,34,206,1))}
-  .btn.outline{
-    background:transparent;
-    border:1px solid rgba(255,255,255,.16);
-    color:var(--text);
-    font-weight:650;
-  }
-  .kpi{
-    display:grid;gap:10px;
-    grid-template-columns: 1fr 1fr;
-  }
-  .mini{
-    border:1px solid var(--line);
-    background: rgba(255,255,255,.03);
-    border-radius:14px;
-    padding:10px 12px;
-  }
-  .mini .t{color:var(--muted);font-size:12px}
-  .mini .v{font-size:16px;font-weight:800;margin-top:4px}
-  .mini .s{font-size:12px;color:var(--muted);margin-top:4px}
-  .badge{
-    display:inline-flex;align-items:center;gap:6px;
-    border-radius:999px;padding:6px 10px;
-    font-size:12px;font-weight:700;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.2);
-    white-space:nowrap;
-  }
-  .b-ok{border-color: rgba(34,197,94,.5); color:var(--on-ok)}
-  .b-warn{border-color: rgba(245,158,11,.55); color:var(--on-warn)}
-  .b-danger{border-color: rgba(239,68,68,.55); color:var(--on-danger)}
-  .b-info{border-color: rgba(37,99,235,.55); color:var(--on-info)}
-  .list{margin:0;padding:0;list-style:none}
-  .item{
-    border:1px solid var(--line);
-    background: rgba(255,255,255,.03);
-    border-radius:14px;
-    padding:10px 12px;
-    margin-top:10px;
-  }
-  .item .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-  .item .title{font-weight:800}
-  .item .meta{color:var(--muted);font-size:12px;margin-top:4px;line-height:1.35}
-  .item .actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-  .smallbtn{
-    padding:8px 10px;border-radius:12px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(0,0,0,.18);
-    color:var(--text);
-    font-weight:650;
-    cursor:pointer;
-    font-size:12px;
-  }
-  .smallbtn.ok{border-color: rgba(34,197,94,.5)}
-  .smallbtn.danger{border-color: rgba(239,68,68,.55)}
-  .smallbtn.warn{border-color: rgba(245,158,11,.55)}
+    .muted{color:var(--muted)}
+    .hr{height:1px;background:var(--line);margin:12px 0}
+    .two{display:grid;grid-template-columns: 1fr 1fr;gap:10px}
+    .hide{display:none !important}
+    .note{font-size:12px;color:var(--muted);line-height:1.45}
 
-  /* bottom nav */
-  .nav{
-    position:fixed;left:0;right:0;bottom:0;
-    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
-    background: rgba(10,16,30,.84);
-    backdrop-filter: blur(12px);
-    border-top:1px solid rgba(255,255,255,.08);
-  }
-  .tabs{display:grid;grid-template-columns: repeat(4,1fr);gap:10px;max-width:920px;margin:0 auto;}
-  .tab{
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:14px;
-    padding:10px 8px;
-    text-align:center;
-    font-weight:800;
-    font-size:12px;
-    color:rgba(234,240,255,.75);
-    background: rgba(255,255,255,.03);
-    cursor:pointer;
-    user-select:none;
-  }
-  .tab .dot{
-    width:8px;height:8px;border-radius:99px;margin:0 auto 6px;
-    opacity:.8;
-  }
-  .tab.active{color:white}
-  .tab.active.g1{background: rgba(14,167,90,.18); border-color: rgba(14,167,90,.45)}
-  .tab.active.g2{background: rgba(37,99,235,.18); border-color: rgba(37,99,235,.45)}
-  .tab.active.g3{background: rgba(245,158,11,.18); border-color: rgba(245,158,11,.45)}
-  .tab.active.g4{background: rgba(168,85,247,.18); border-color: rgba(168,85,247,.45)}
+    .warnbox{
+      border:1px dashed rgba(245,158,11,.55);
+      background: rgba(245,158,11,.08);
+      border-radius:14px;
+      padding:10px 12px;
+      color: rgba(180,83,9,1);
+      font-size:12px;
+      line-height:1.45;
+    }
+    html[data-theme="dark"] .warnbox{color:#ffe9bf}
 
-  .dot.g1{background:var(--g1)}
-  .dot.g2{background:var(--g2)}
-  .dot.g3{background:var(--g3)}
-  .dot.g4{background:var(--g4)}
+    .okbox{
+      border:1px dashed rgba(34,197,94,.55);
+      background: rgba(34,197,94,.08);
+      border-radius:14px;
+      padding:10px 12px;
+      color: rgba(22,163,74,1);
+      font-size:12px;
+      line-height:1.45;
+    }
+    html[data-theme="dark"] .okbox{color:#c9f7d8}
 
-  .muted{color:var(--muted)}
-  .hr{height:1px;background:var(--line);margin:12px 0}
-  .two{display:grid;grid-template-columns: 1fr 1fr;gap:10px}
-  .hide{display:none !important}
-  .note{font-size:12px;color:var(--muted);line-height:1.45}
-  .warnbox{
-    border:1px dashed rgba(245,158,11,.55);
-    background: var(--bg-warn);
-    border-radius:14px;
-    padding:10px 12px;
-    color: var(--on-warn);
-    font-size:12px;
-    line-height:1.45;
-  }
-  .okbox{
-    border:1px dashed rgba(34,197,94,.55);
-    background: var(--bg-ok);
-    border-radius:14px;
-    padding:10px 12px;
-    color: var(--on-ok);
-    font-size:12px;
-    line-height:1.45;
-  }
+    /* Timeline */
+    .tl-top{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;
+    }
+    .progress{
+      height:10px;border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      overflow:hidden;
+      flex:1;
+      min-width:160px;
+    }
+    html[data-theme="dark"] .progress{background: rgba(0,0,0,.18);}
+    .progress > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(14,167,90,1), rgba(37,99,235,1));
+    }
+    .tl-item{
+      position:relative;
+      padding-left:16px;
+    }
+    .tl-item::before{
+      content:"";
+      position:absolute;
+      left:4px; top:16px;
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(15,23,42,.22);
+      border:1px solid var(--line);
+    }
+    html[data-theme="dark"] .tl-item::before{background: rgba(255,255,255,.35);}
+    .tl-item.done::before{ background: rgba(34,197,94,.9); }
+    .tl-item.today::before{ background: rgba(245,158,11,.95); }
+    .tl-item.overdue::before{ background: rgba(239,68,68,.95); }
+    .tl-item .meta b{font-weight:900}
 
-  /* Timeline */
-  .tl-top{
-    display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;
-  }
-  .progress{
-    height:10px;border-radius:999px;
-    border:1px solid var(--line);
-    background: rgba(0,0,0,.18);
-    overflow:hidden;
-    flex:1;
-    min-width:160px;
-  }
-  .progress > div{
-    height:100%;
-    width:0%;
-    background: linear-gradient(90deg, rgba(14,167,90,1), rgba(37,99,235,1));
-  }
-  .tl-item{
-    position:relative;
-    padding-left:16px;
-  }
-  .tl-item::before{
-    content:"";
-    position:absolute;
-    left:4px; top:16px;
-    width:8px;height:8px;border-radius:999px;
-    background: rgba(255,255,255,.35);
-    border:1px solid var(--line);
-  }
-  .tl-item.done::before{ background: rgba(34,197,94,.9); }
-  .tl-item.today::before{ background: rgba(245,158,11,.95); }
-  .tl-item.overdue::before{ background: rgba(239,68,68,.95); }
-  .tl-item .meta b{font-weight:800}
+    /* แสดง EC/pH/tip แบบสวย */
+    .waterline{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: var(--surface);
+      font-size:12px;
+      color: var(--text);
+      font-weight:800;
+      white-space:nowrap;
+    }
+    .tag .k{color:var(--muted);font-weight:900}
 
-  @media (min-width:760px){
-    .grid{grid-template-columns: 1.1fr .9fr;}
-  }
-</style>
-
+    @media (min-width:760px){
+      .grid{grid-template-columns: 1.1fr .9fr;}
+    }
+  </style>
 </head>
 
 <body>
@@ -449,7 +403,7 @@
             <button class="btn g1" id="btnMarkDone">✓ ทำงานนี้เสร็จแล้ว</button>
           </div>
           <div class="note" style="margin-top:10px">
-            * ถ้าเปิดแอปค้างไว้ ระบบจะ “เตือนในแอป” (สั่น/เสียง) ตอนถึงเวลาได้  
+            * ถ้าเปิดแอปค้างไว้ ระบบจะ “เตือนในแอป” (สั่น/เสียง) ตอนถึงเวลาได้
             และถ้าคุณโฮสต์เป็น HTTPS + Add to Home Screen จะเปิด Notification จริงได้ (ดูหน้า “ตั้งค่า”)
           </div>
 
@@ -458,13 +412,13 @@
           <div id="todayList" class="note">กำลังคำนวณรายการวันนี้…</div>
 
           <div class="hr"></div>
-          <h2>🗺️ ไทม์ไลน์จนเก็บเกี่ยว</h2>
+          <h2>🗺️ ไทม์ไลน์จนเก็บเกี่ยว (รวม EC/pH)</h2>
 
           <div class="two">
             <div>
               <label>เลือกผัก (ไทม์ไลน์)</label>
               <select id="timelinePlant"></select>
-              <div class="note">แสดงงานทั้งหมดตั้งแต่เพาะ → ย้าย → ดูแล → เก็บเกี่ยว</div>
+              <div class="note">แสดงงานทั้งหมดตั้งแต่เพาะ → ย้าย → ดูแล → เก็บเกี่ยว + ค่า EC/pH แนะนำ</div>
             </div>
             <div>
               <label>สรุปความคืบหน้า</label>
@@ -497,8 +451,8 @@
           <div class="hr"></div>
           <div class="warnbox">
             <b>เรื่อง Notification บน iPhone</b><br/>
-            ถ้าเปิดไฟล์ index.html จากเครื่อง (file://) จะไม่เด้งเตือนแบบระบบได้  
-            ต้องเป็นเว็บ HTTPS และติดตั้งเป็น PWA (Add to Home Screen) ถึงจะขอสิทธิ์แจ้งเตือน
+            ถ้าเปิดไฟล์ index.html จากเครื่อง (file://) จะไม่เด้งเตือนแบบระบบได้
+            ต้องเป็นเว็บ HTTPS และติดตั้งเป็น PWA (Add to Home Screen) ถึงจะขอสิทธิ์แจ้งเตือนได้
           </div>
 
           <div class="hr"></div>
@@ -535,7 +489,7 @@
             <input id="newCycleName" placeholder="เช่น รอบชุดติดแถม / รอบสัปดาห์ที่ 1" />
           </div>
           <div>
-            <label>วันที่เริ่ม (ไทย)</label>
+            <label>วันที่เริ่ม</label>
             <input id="newCycleStart" type="date" />
           </div>
         </div>
@@ -594,7 +548,7 @@
       <div class="card">
         <h2>🗓️ งานอัตโนมัติ (แก้ได้ทีหลัง)</h2>
         <div class="note">
-          ระบบสร้างงานจาก “วันเริ่มเพาะ” และกระจายตามไทม์ไลน์มาตรฐานผักสลัด/ใบเขียว  
+          ระบบสร้างงานจาก “วันเริ่มเพาะ” และกระจายตามไทม์ไลน์มาตรฐานผักสลัด/ใบเขียว
           คุณสามารถ “ทำเสร็จแล้ว” หรือ “เลื่อนวัน” ได้ในหน้าบันทึก
         </div>
         <div id="tasksList" class="note">ยังไม่มีงาน</div>
@@ -629,13 +583,13 @@
               <input id="tempC" type="number" step="0.1" placeholder="เช่น 29" />
             </div>
             <div>
-              <label>วันที่บันทึก (เลือกย้อนหลังได้)</label>
+              <label>วันที่บันทึก (เลือกได้อิสระ)</label>
               <input id="healthDate" type="date" />
             </div>
           </div>
           <div class="two">
             <div>
-              <label>เวลา (ไทย)</label>
+              <label>เวลา (เลือกได้อิสระ)</label>
               <input id="healthTime" type="time" step="1"/>
             </div>
             <div>
@@ -644,6 +598,9 @@
             </div>
           </div>
           <button class="btn g3" id="btnSaveHealth">บันทึกสภาพ</button>
+          <div class="note" style="margin-top:8px">
+            * ระบบจะ “ไม่ล็อกวัน/เวลา” อีกต่อไป — คุณเลือกย้อนหลัง/ล่วงหน้าได้ตามจริง
+          </div>
         </div>
 
         <div class="card">
@@ -673,11 +630,11 @@
 
           <div class="two">
             <div>
-              <label>วันที่ (เลือกย้อนหลังได้)</label>
+              <label>วันที่ (เลือกได้อิสระ)</label>
               <input id="actDate" type="date" />
             </div>
             <div>
-              <label>เวลา (ไทย)</label>
+              <label>เวลา (เลือกได้อิสระ)</label>
               <input id="actTime" type="time" step="1"/>
             </div>
           </div>
@@ -719,7 +676,7 @@
         <h2>⚙️ ตั้งค่า</h2>
 
         <div class="okbox">
-          <b>เวลาไทย 100%</b> ระบบใช้ Asia/Bangkok เสมอ และให้คุณเลือกวันที่ย้อนหลังได้แล้ว ✅
+          <b>เวลาไทย 100%</b> ระบบใช้ Asia/Bangkok เสมอ แต่ <b>ไม่ล็อกวัน/เวลา</b> ในช่องกรอกแล้ว ✅
         </div>
 
         <div class="hr"></div>
@@ -811,8 +768,7 @@ function getThaiNow() {
     timeZone: "Asia/Bangkok",
     hour: "2-digit", minute: "2-digit", second: "2-digit"
   });
-  const hhmmss = time;
-  return { now, date, time: hhmmss };
+  return { now, date, time };
 }
 function toThaiDateTimeLocalInput(isoLikeDate, hhmmss){
   const [hh,mm] = (hhmmss || "00:00:00").split(":");
@@ -862,20 +818,42 @@ const DEFAULT_PLANTS = [
 
 /*
   TIMELINE TEMPLATE (days after sowing)
-  เพิ่ม "เตรียมเก็บ" และ "เก็บเกี่ยว" ให้ครบ
+  ✅ เพิ่ม ec / ph / tip ให้แสดงในไทม์ไลน์ (และในรายการงาน)
+  หน่วย EC ในโค้ดนี้ใช้รูปแบบ "µS/cm" ตามเครื่องคุณ (เช่น 1000 µS/cm)
 */
 const TASK_TEMPLATE = [
-  { day:0,  title:"เพาะเมล็ด", detail:"กดฟองน้ำให้ชุ่มทั้งก้อน / หยอดเมล็ด / ปิดฝา", type:"เพาะเมล็ด" },
-  { day:1,  title:"เช็คความชื้น", detail:"เปิดเช็คสั้น ๆ 10 วินาที + พรมถ้าแห้ง", type:"เช็คความชื้น/เติมน้ำ" },
-  { day:2,  title:"เช็คความชื้น", detail:"คุมความชื้นให้สม่ำเสมอ (อย่าแฉะ)", type:"เช็คความชื้น/เติมน้ำ" },
-  { day:3,  title:"เปิดฝาระบายอากาศ", detail:"เปิดฝาวันละ 1–2 ครั้ง ลดรา (ถ้ายังไม่งอกก็ชื้นไว้)", type:"เปิดฝาระบายอากาศ" },
-  { day:4,  title:"เริ่มรับแสงอ่อน", detail:"ให้แสงเช้าอ่อน ๆ / อย่าโดนแดดแรง", type:"เริ่มให้แสง" },
-  { day:7,  title:"เริ่มปุ๋ยอ่อน", detail:"เริ่มปุ๋ย AB อ่อนมาก (เช่น 1/4) ถ้ารากเริ่มเดิน", type:"ให้ปุ๋ยอ่อน" },
-  { day:10, title:"ย้ายลงถ้วย/ตะกร้า", detail:"ถ้าใบจริง 2 ใบ + รากแข็งแรง", type:"ย้ายลงถ้วย/ตะกร้า" },
-  { day:14, title:"ย้ายลงทาวเวอร์", detail:"เมื่อแข็งแรงพอ/รากยาวถึงน้ำ", type:"ย้ายลงทาวเวอร์" },
-  { day:21, title:"ตรวจ EC/น้ำ/ตะไคร่", detail:"ปรับความเข้มปุ๋ย/ป้องกันน้ำร้อน/กันแสงเข้าถัง", type:"ทำความสะอาดระบบ" },
-  { day:24, title:"เตรียมเก็บเกี่ยว", detail:"ลดความเครียดพืช/คุมความสะอาด/เตรียมภาชนะ", type:"อื่น ๆ" },
-  { day:28, title:"เก็บเกี่ยว", detail:"ตัดเก็บ/ล้าง/ชั่ง/บันทึกผล แล้วทำความสะอาดระบบ", type:"เก็บเกี่ยว" }
+  { day:0,  title:"เพาะเมล็ด", detail:"กดฟองน้ำให้ชุ่มทั้งก้อน / หยอดเมล็ด / ปิดฝา", type:"เพาะเมล็ด",
+    ec:"0–300 µS/cm", ph:"5.8–6.2", tip:"ช่วงนี้ไม่ต้องเร่งปุ๋ย เน้นความชื้นสม่ำเสมอ" },
+
+  { day:1,  title:"เช็คความชื้น", detail:"เปิดเช็คสั้น ๆ 10 วินาที + พรมถ้าแห้ง", type:"เช็คความชื้น/เติมน้ำ",
+    ec:"0–300 µS/cm", ph:"5.8–6.2", tip:"ระวังแฉะ/รา เปิดระบายสั้น ๆ" },
+
+  { day:2,  title:"เช็คความชื้น", detail:"คุมความชื้นให้สม่ำเสมอ (อย่าแฉะ)", type:"เช็คความชื้น/เติมน้ำ",
+    ec:"0–300 µS/cm", ph:"5.8–6.2", tip:"ยังไม่จำเป็นต้องเพิ่ม EC" },
+
+  { day:3,  title:"เปิดฝาระบายอากาศ", detail:"เปิดฝาวันละ 1–2 ครั้ง ลดรา (ถ้ายังไม่งอกก็ชื้นไว้)", type:"เปิดฝาระบายอากาศ",
+    ec:"0–300 µS/cm", ph:"5.8–6.2", tip:"ถ้าพบรา ลดความชื้น + เพิ่มการระบาย" },
+
+  { day:4,  title:"เริ่มรับแสงอ่อน", detail:"ให้แสงเช้าอ่อน ๆ / อย่าโดนแดดแรง", type:"เริ่มให้แสง",
+    ec:"600–800 µS/cm", ph:"5.8–6.3", tip:"เริ่มปุ๋ยอ่อนเมื่อรากเริ่มเดิน" },
+
+  { day:7,  title:"เริ่มปุ๋ยอ่อน", detail:"เริ่มปุ๋ย AB อ่อนมาก (เช่น 1/4) ถ้ารากเริ่มเดิน", type:"ให้ปุ๋ยอ่อน",
+    ec:"600–800 µS/cm", ph:"5.8–6.3", tip:"ค่อย ๆ เพิ่ม อย่าให้แกว่งแรง" },
+
+  { day:10, title:"ย้ายลงถ้วย/ตะกร้า", detail:"ถ้าใบจริง 2 ใบ + รากแข็งแรง", type:"ย้ายลงถ้วย/ตะกร้า",
+    ec:"900–1100 µS/cm", ph:"6.0–6.5", tip:"เหมาะกับต้นกล้า อย่าเร่ง EC สูงเกิน" },
+
+  { day:14, title:"ย้ายลงทาวเวอร์", detail:"เมื่อแข็งแรงพอ/รากยาวถึงน้ำ", type:"ย้ายลงทาวเวอร์",
+    ec:"1000–1200 µS/cm", ph:"6.0–6.5", tip:"หลังย้าย 1–2 วันแรก ระวังแดด/ลมจัด" },
+
+  { day:21, title:"ตรวจ EC/น้ำ/ตะไคร่", detail:"ปรับความเข้มปุ๋ย/ป้องกันน้ำร้อน/กันแสงเข้าถัง", type:"ทำความสะอาดระบบ",
+    ec:"1200–1400 µS/cm", ph:"6.0–6.5", tip:"กันแสงเข้าถังช่วยลดตะไคร่และกลิ่น" },
+
+  { day:24, title:"เตรียมเก็บเกี่ยว", detail:"ลดความเครียดพืช/คุมความสะอาด/เตรียมภาชนะ", type:"อื่น ๆ",
+    ec:"1500–1700 µS/cm", ph:"6.0–6.3", tip:"ถ้าใบปลายไหม้/งอ ลด EC ลงเล็กน้อย" },
+
+  { day:28, title:"เก็บเกี่ยว", detail:"ตัดเก็บ/ล้าง/ชั่ง/บันทึกผล แล้วทำความสะอาดระบบ", type:"เก็บเกี่ยว",
+    ec:"—", ph:"—", tip:"หลังเก็บเกี่ยวล้างระบบ ลดคราบ/ตะไคร่" }
 ];
 
 /* =========================
@@ -906,14 +884,10 @@ if(!db){
       }
     ],
     activeCycleId: "c_first",
-    logs: {
-      actions: [],
-      health: []
-    }
+    logs: { actions: [], health: [] }
   };
   saveDB();
 }else{
-  // กันเคสอัปเดตจากเวอร์ชันเก่า
   db.settings = db.settings || {};
   db.settings.inAppAlert = db.settings.inAppAlert || { enabled:true, vibrate:true, sound:true };
   if(!db.settings.themeMode) db.settings.themeMode = "system";
@@ -940,8 +914,7 @@ function daysAfter(dateYYYYMMDD, addDays){
   const base = new Date(`${dateYYYYMMDD}T00:00:00+07:00`).getTime();
   const ms = base + (addDays*24*60*60*1000);
   const dt = new Date(ms);
-  const y = dt.toLocaleDateString("sv-SE", { timeZone:"Asia/Bangkok" });
-  return y;
+  return dt.toLocaleDateString("sv-SE", { timeZone:"Asia/Bangkok" });
 }
 function msToHuman(ms){
   if(ms <= 0) return "ถึงเวลาแล้ว";
@@ -961,6 +934,13 @@ function escapeHtml(str){
     .replaceAll(">","&gt;").replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
 }
+function renderWaterLine(t){
+  if(!t || (!t.ec && !t.ph && !t.tip)) return "";
+  const ec = t.ec ? `<span class="tag"><span class="k">EC</span> ${escapeHtml(t.ec)}</span>` : "";
+  const ph = t.ph ? `<span class="tag"><span class="k">pH</span> ${escapeHtml(t.ph)}</span>` : "";
+  const tip = t.tip ? `<span class="tag"><span class="k">TIP</span> ${escapeHtml(t.tip)}</span>` : "";
+  return `<div class="waterline">${ec}${ph}${tip}</div>`;
+}
 
 /* =========================
    THEME LOGIC (System/Dark/Light)
@@ -976,7 +956,6 @@ const mqlDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: da
 function getResolvedTheme(mode){
   if(mode === "dark") return "dark";
   if(mode === "light") return "light";
-  // system
   const isDark = mqlDark ? mqlDark.matches : true;
   return isDark ? "dark" : "light";
 }
@@ -984,17 +963,14 @@ function applyTheme(mode){
   const resolved = getResolvedTheme(mode);
   document.documentElement.setAttribute("data-theme", resolved);
 
-  // label
   const label = mode==="system" ? "ระบบ" : (mode==="dark" ? "มืด" : "สว่าง");
   if(themeLabel) themeLabel.textContent = label;
 
-  // settings ui
   if(themeSelect) themeSelect.value = mode;
   if(themeStatus) themeStatus.textContent = (resolved==="dark" ? "โหมดมืด" : "โหมดสว่าง");
   if(themeStatusSub) themeStatusSub.textContent =
     mode==="system" ? "อิงตามการตั้งค่าระบบของเครื่อง" : "ล็อกตามที่คุณเลือก";
 
-  // theme-color
   const meta = document.querySelector('meta[name="theme-color"]');
   if(meta){
     meta.setAttribute("content", resolved==="dark" ? "#0ea75a" : "#2563eb");
@@ -1005,19 +981,13 @@ function setThemeMode(mode){
   saveDB();
   applyTheme(mode);
 }
-
 function cycleThemeMode(){
   const cur = db.settings.themeMode || "system";
   const next = cur==="system" ? "dark" : cur==="dark" ? "light" : "system";
   setThemeMode(next);
 }
-
-if(btnTheme){
-  btnTheme.addEventListener("click", cycleThemeMode);
-}
-if(themeSelect){
-  themeSelect.addEventListener("change", ()=> setThemeMode(themeSelect.value));
-}
+if(btnTheme) btnTheme.addEventListener("click", cycleThemeMode);
+if(themeSelect) themeSelect.addEventListener("change", ()=> setThemeMode(themeSelect.value));
 if(mqlDark){
   const handler = ()=>{
     if((db.settings.themeMode || "system")==="system"){
@@ -1028,8 +998,6 @@ if(mqlDark){
   if(mqlDark.addEventListener) mqlDark.addEventListener("change", handler);
   else if(mqlDark.addListener) mqlDark.addListener(handler);
 }
-
-// apply at start
 applyTheme(db.settings.themeMode || "system");
 
 /* =========================
@@ -1128,16 +1096,18 @@ const timelineEta = document.getElementById("timelineEta");
 const timelineBar = document.getElementById("timelineBar");
 const timelineRange = document.getElementById("timelineRange");
 
-function setDefaultDatesTimes(){
+/* ✅ ไม่ล็อกวัน/เวลา: เซ็ตค่าเริ่มต้น “เฉพาะตอนยังว่าง” เท่านั้น */
+function setDefaultDatesTimesIfEmpty(){
   const thai = getThaiNow();
-  if(newCycleStart) newCycleStart.value = thai.date;
-  if(healthDate) healthDate.value = thai.date;
-  if(actDate) actDate.value = thai.date;
-  const t = thai.time;
-  if(healthTime) healthTime.value = t.slice(0,8);
-  if(actTime) actTime.value = t.slice(0,8);
+  if(newCycleStart && !newCycleStart.value) newCycleStart.value = thai.date;
+  if(healthDate && !healthDate.value) healthDate.value = thai.date;
+  if(actDate && !actDate.value) actDate.value = thai.date;
+
+  const t = thai.time.slice(0,8);
+  if(healthTime && !healthTime.value) healthTime.value = t;
+  if(actTime && !actTime.value) actTime.value = t;
 }
-setDefaultDatesTimes();
+setDefaultDatesTimesIfEmpty();
 
 /* =========================
    RENDER
@@ -1193,9 +1163,9 @@ function renderPlantOptions(){
 
   const mix = db.plants.find(p=>p.name==="สลัดมิกซ์") || db.plants.find(p=>p.id==="p_mix");
   if(mix){
-    plantSelect.value = mix.id;
-    healthPlant.value = mix.id;
-    actPlant.value = mix.id;
+    if(!plantSelect.value) plantSelect.value = mix.id;
+    if(!healthPlant.value) healthPlant.value = mix.id;
+    if(!actPlant.value) actPlant.value = mix.id;
   }
 }
 
@@ -1213,7 +1183,7 @@ desiredHoles.addEventListener("input", renderCalc);
 plantGerm.addEventListener("input", renderCalc);
 plantSelect.addEventListener("change", ()=>{
   const c = getActiveCycle();
-  desiredHoles.value = String(c.targetHoles || 48);
+  if(!desiredHoles.value) desiredHoles.value = String(c.targetHoles || 48);
   plantGerm.value = "";
   renderCalc();
 });
@@ -1224,7 +1194,7 @@ function renderCyclePlants(){
     cyclePlantsList.innerHTML = `<div class="note">ยังไม่มีผักในรอบนี้</div>`;
     return;
   }
-  const items = c.plantsInCycle.map(pi=>{
+  cyclePlantsList.innerHTML = c.plantsInCycle.map(pi=>{
     const p = getPlantById(pi.plantId);
     return `
       <div class="item">
@@ -1245,8 +1215,6 @@ function renderCyclePlants(){
       </div>
     `;
   }).join("");
-
-  cyclePlantsList.innerHTML = items;
 }
 
 function renderTasks(){
@@ -1279,6 +1247,7 @@ function renderTasks(){
             <div class="meta">
               กำหนด: <b>${escapeHtml(t.dueDate)} ${escapeHtml(t.dueTime)}</b><br/>
               ${escapeHtml(t.detail || "")}
+              ${renderWaterLine(t)}
             </div>
           </div>
           ${status}
@@ -1382,7 +1351,7 @@ function renderToday(){
 
   const p = getPlantById(next.plantId);
   nextTaskTitle.textContent = `${p?.name || "—"}: ${next.title}`;
-  nextTaskMeta.textContent = `กำหนด: ${next.dueDate} ${next.dueTime}`;
+  nextTaskMeta.innerHTML = `กำหนด: ${next.dueDate} ${next.dueTime}${renderWaterLine(next)}`;
 
   const diff = next.dueMs - nowMs;
   countdown.textContent = msToHuman(diff);
@@ -1405,7 +1374,11 @@ function renderToday(){
             <div class="top">
               <div>
                 <div class="title">${escapeHtml(pp?.name||"—")} — ${escapeHtml(t.title)}</div>
-                <div class="meta">กำหนด: <b>${escapeHtml(t.dueDate)} ${escapeHtml(t.dueTime)}</b><br/>${escapeHtml(t.detail||"")}</div>
+                <div class="meta">
+                  กำหนด: <b>${escapeHtml(t.dueDate)} ${escapeHtml(t.dueTime)}</b><br/>
+                  ${escapeHtml(t.detail||"")}
+                  ${renderWaterLine(t)}
+                </div>
               </div>
               ${badge}
             </div>
@@ -1452,7 +1425,6 @@ function ensureTimelineSelect(){
     timelinePlant.appendChild(o);
   });
 
-  // ถ้าเลือกเดิมยังอยู่ให้คงไว้ ไม่งั้นเลือกตัวแรก
   const cur = timelinePlant.dataset.selected || "";
   if(cur && unique.includes(cur)) timelinePlant.value = cur;
   else timelinePlant.value = unique[0];
@@ -1503,14 +1475,13 @@ function renderTimeline(){
   const last = tasks[tasks.length-1];
   timelineRange.textContent = `${first.dueDate} → ${last.dueDate}`;
 
-  const lastMs = last.dueMs;
-  const left = lastMs - nowMs;
+  const left = last.dueMs - nowMs;
   timelineEta.textContent = left>0 ? `ถึงวันเก็บเกี่ยวอีก ${msToHuman(left)}` : `เลยวันเก็บเกี่ยวแล้ว (ตรวจงาน/บันทึกเก็บเกี่ยว)`;
 
   const p = getPlantById(pid);
 
   timelineList.innerHTML = `
-    <div class="note">ผัก: <b>${escapeHtml(p?.name || "—")}</b> • แสดงงานทั้งหมดเรียงตามเวลา</div>
+    <div class="note">ผัก: <b>${escapeHtml(p?.name || "—")}</b> • แสดงงานทั้งหมดเรียงตามเวลา (รวม EC/pH)</div>
     <ul class="list">
       ${tasks.map(t=>{
         const isDone = !!t.done;
@@ -1530,6 +1501,7 @@ function renderTimeline(){
                 <div class="meta">
                   กำหนด: <b>${escapeHtml(t.dueDate)} ${escapeHtml(t.dueTime)}</b><br/>
                   ${escapeHtml(t.detail || "")}
+                  ${renderWaterLine(t)}
                 </div>
               </div>
               ${badge}
@@ -1547,6 +1519,7 @@ function renderTimeline(){
 }
 
 function renderAll(){
+  setDefaultDatesTimesIfEmpty(); /* ✅ เติมค่าเริ่มต้นเฉพาะช่องที่ว่าง */
   renderHeader();
   renderCycleSelect();
   renderPlantOptions();
@@ -1593,8 +1566,10 @@ btnCreateCycle.addEventListener("click", ()=>{
   db.cycles.unshift(nc);
   db.activeCycleId = nc.id;
   saveDB();
+
   newCycleName.value="";
   newCycleGerm.value="";
+  newCycleTargetHoles.value="";
   renderAll();
 });
 
@@ -1658,10 +1633,12 @@ function regenTasksForPlant(piId){
 function generateTasksForPlant(cycle, plantInCycle){
   const pid = plantInCycle.plantId;
   const sowDate = plantInCycle.sowDate || cycle.startDate;
+
   TASK_TEMPLATE.forEach(tpl=>{
     const dueDate = daysAfter(sowDate, tpl.day);
     const dueTime = tpl.day===0 ? "08:00:00" : "08:30:00";
     const dueMs = parseDateTimeToMs(dueDate, dueTime);
+
     cycle.tasks.push({
       id: uid("task"),
       plantId: pid,
@@ -1669,7 +1646,12 @@ function generateTasksForPlant(cycle, plantInCycle){
       detail: tpl.detail,
       type: tpl.type,
       dueDate, dueTime, dueMs,
-      done:false
+      done:false,
+
+      /* ✅ ใส่ EC/pH/tip ลงงานจริง เพื่อแสดงในหน้า Today/Timeline/Tasks */
+      ec: tpl.ec || "",
+      ph: tpl.ph || "",
+      tip: tpl.tip || ""
     });
   });
 }
@@ -1768,20 +1750,14 @@ setInterval(tick, 1000);
 /* =========================
    LOGGING
 ========================= */
-function setLogDefaults(){
-  const thai = getThaiNow();
-  healthDate.value = thai.date;
-  actDate.value = thai.date;
-  healthTime.value = thai.time;
-  actTime.value = thai.time;
-}
-setLogDefaults();
-
 btnSaveHealth.addEventListener("click", ()=>{
   const c = getActiveCycle();
   const pid = healthPlant.value;
+
   const date = healthDate.value || getThaiNow().date;
-  const time = (healthTime.value || getThaiNow().time);
+  const timeRaw = (healthTime.value || getThaiNow().time);
+  const time = timeRaw.length===5 ? (timeRaw+":00") : timeRaw;
+
   const rec = {
     id: uid("health"),
     cycleId: c.id,
@@ -1789,7 +1765,7 @@ btnSaveHealth.addEventListener("click", ()=>{
     leafStatus: leafStatus.value,
     tempC: tempC.value ? Number(tempC.value) : null,
     date,
-    time: time.length===5 ? (time+":00") : time,
+    time,
     note: (healthNote.value||"").trim()
   };
   db.logs.health.push(rec);
@@ -1802,15 +1778,18 @@ btnSaveHealth.addEventListener("click", ()=>{
 btnSaveAct.addEventListener("click", ()=>{
   const c = getActiveCycle();
   const pid = actPlant.value;
+
   const date = actDate.value || getThaiNow().date;
-  const time = (actTime.value || getThaiNow().time);
+  const timeRaw = (actTime.value || getThaiNow().time);
+  const time = timeRaw.length===5 ? (timeRaw+":00") : timeRaw;
+
   const rec = {
     id: uid("act"),
     cycleId: c.id,
     plantId: pid,
     type: actType.value,
     date,
-    time: time.length===5 ? (time+":00") : time,
+    time,
     note: (actNote.value||"").trim()
   };
   db.logs.actions.push(rec);
@@ -1910,7 +1889,6 @@ fileImport.addEventListener("change", async (e)=>{
     if(!obj || !obj.cycles) throw new Error("format");
     db = obj;
 
-    // กันตก settings ใหม่
     db.settings = db.settings || {};
     db.settings.inAppAlert = db.settings.inAppAlert || { enabled:true, vibrate:true, sound:true };
     if(!db.settings.themeMode) db.settings.themeMode = "system";
